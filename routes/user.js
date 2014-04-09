@@ -41,8 +41,7 @@ exports.userpoints = function(db) {
 			} 
 		},
 		function (err, items) {
-			if (err) return handleError(err);
-			console.log(items);
+			if (err) return handleError(err);			
 			res.json(items);
 		}
 	)
