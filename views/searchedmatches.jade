@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    h1.
+        Match List
+    ul
+        each matchinfo, i in match
+                form(action='/add', method='POST')
+                    li
+                        br
+                        each team, j in matchinfo.teams
+                            br
+                            br							
+                            #{team[0].team_title}= team[0].team_title
+                            br
+                            input(type='radio', radio='radio', value='#{team[0].team_title}', name='team')
+                            br
+                            br
+                            select(name="player")
+                                each player, k in team[0].players
+                                    option(value='#{player.name}') #{player.name}
+                    br
+                    input(type='submit', value='Save')

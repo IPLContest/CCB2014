@@ -9,9 +9,13 @@ var user = require('./routes/user');
 var match = require('./routes/match');
 var http = require('http');
 var path = require('path');
+
 // Database
-var mongo = require('mongoskin');
-var db = mongo.db("mongodb://localhost:27017/nodetest2", {native_parser:true});
+
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/cpl2014');
+
 
 var app = express();
 
@@ -37,6 +41,11 @@ app.get('/userlist', user.userlist(db));
 app.get('/userpoints', user.userpoints(db));
 app.get('/userpoints-table', routes.pointstable);
 app.get('/allmatches', match.allmatches(db));
+app.get('/players', match.players(db));
+app.get('/teams', match.teams(db));
+app.get('/matches', match.matches(db));
+app.get('/searchmatches', match.searchteams(db));
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

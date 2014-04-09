@@ -1,0 +1,12 @@
+extends layout
+block content
+    h1.
+        Player List
+    ul
+        each team, i in teams
+            li
+                a(href="#{team.team_title}")= team.team_title
+                ul
+                  each player,j in team.players
+                    li
+                      a(href="#{player.name}")= player.name

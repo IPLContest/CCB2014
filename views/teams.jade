@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1.
+        Team List
+    ul
+        each team, i in teams
+            li
+                a(href="players?teamid=#{team._id}")= team.team_title

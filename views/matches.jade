@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1.
+        Match List
+    ul
+        each matchinfo, i in match
+            li
+                a(href="searchmatches?date=#{matchinfo.date}")= matchinfo.date
