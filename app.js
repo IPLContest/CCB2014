@@ -36,7 +36,7 @@ app.get('/', routes.index);
 app.get('/userlist', user.userlist(db));
 app.get('/userpoints', user.userpoints(db));
 app.get('/userpoints-table', routes.pointstable);
-app.get('/matchesinorder', match.matchesinorder(db));
+app.get('/allmatches', match.allmatches(db));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
