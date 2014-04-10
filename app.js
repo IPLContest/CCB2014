@@ -45,6 +45,7 @@ app.get('/players', match.players(db));
 app.get('/teams', match.teams(db));
 app.get('/matches', match.matches(db));
 app.get('/searchmatches', match.searchteams(db));
+app.post('/addUserMatchInfo', match.addUserMatchInfo(db));
 
 
 http.createServer(app).listen(app.get('port'), function(){

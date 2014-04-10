@@ -5,19 +5,23 @@ block content
         Match List
     ul
         each matchinfo, i in match
-                form(action='/add', method='POST')
+                form(action='addUserMatchInfo', method='POST')
+                    input(type='hidden', value='#{matchinfo.match_id}', name='matchid')
                     li
                         br
                         each team, j in matchinfo.teams
                             br
-                            br							
+                            
+                            input(type='radio', radio='radio', value='#{team[0]._id}', name='team')
                             #{team[0].team_title}= team[0].team_title
-                            br
-                            input(type='radio', radio='radio', value='#{team[0].team_title}', name='team')
-                            br
-                            br
-                            select(name="player")
-                                each player, k in team[0].players
-                                    option(value='#{player.name}') #{player.name}
+                    br		
+                    select(name="player")
+                        each matchinfo1, i in match  		
+                            each team1, j in matchinfo1.teams
+                                br
+                                br							
+                                each player, k in team1[0].players
+                                    option(value='#{player.player_id}') #{player.name}
+                    br
                     br
                     input(type='submit', value='Save')
