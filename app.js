@@ -16,6 +16,9 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/cpl2014');
 
+var mongoo = require('mongoskin');
+var dbv = mongoo.db("mongodb://localhost:27017/nodetest2", {native_parser:true});
+
 
 var app = express();
 
@@ -37,10 +40,10 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/userlist', user.userlist(db));
-app.get('/userpoints', user.userpoints(db));
+app.get('/userlist', user.userlist(dbv));
+app.get('/userpoints', user.userpoints(dbv));
 app.get('/userpoints-table', routes.pointstable);
-app.get('/allmatches', match.allmatches(db));
+app.get('/allmatches', match.allmatches(dbv));
 app.get('/players', match.players(db));
 app.get('/teams', match.teams(db));
 app.get('/matches', match.matches(db));

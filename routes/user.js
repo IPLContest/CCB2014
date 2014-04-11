@@ -3,18 +3,19 @@
  * GET userlist page.
  */
 
-exports.userlist = function(db) {
+exports.userlist = function(dbv) {
   return function(req, res) {
-    db.collection('user').find().toArray(function (err, items) {
+    dbv.collection('user').find().toArray(function (err, items) {
+	  console.log(items);
       res.json(items);
     })
   }
 };
 
 
-exports.userpoints = function(db) {
+exports.userpoints = function(dbv) {
   return function(req, res) {
-    db.collection('user').aggregate(
+    dbv.collection('user').aggregate(
 		{"$unwind": "$contest" } ,
 		{ $group:
 			{ 
