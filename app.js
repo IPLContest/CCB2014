@@ -7,6 +7,7 @@ var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
 var match = require('./routes/match');
+var admin = require('./routes/admin.js')
 var http = require('http');
 var path = require('path');
 
@@ -49,6 +50,9 @@ app.get('/teams', match.teams(db));
 app.get('/matches', match.matches(db));
 app.get('/searchmatches', match.searchteams(db));
 app.post('/addUserMatchInfo', match.addUserMatchInfo(db));
+app.get('/admin', admin.admin(db));
+app.post('/adminData', admin.adminData(db));
+app.post('/adminSubmit', admin.adminSubmit(db));
 
 
 http.createServer(app).listen(app.get('port'), function(){
