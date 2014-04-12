@@ -4,11 +4,14 @@
  */
 
 var express = require('express');
+var step = require('step');
 var routes = require('./routes');
 var user = require('./routes/user');
 var match = require('./routes/match');
+var integration = require('./routes/integration');
 var http = require('http');
 var path = require('path');
+
 
 // Database
 
@@ -31,6 +34,14 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(err, req, res, next) {
+	console.log("Error occured *****");
+  res.render('searchedmatches', {
+    "status" : "fail",
+    "statusmessage":"No Matches Found today",
+    });
+});
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -46,6 +57,14 @@ app.get('/teams', match.teams(db));
 app.get('/matches', match.matches(db));
 app.get('/searchmatches', match.searchteams(db));
 app.post('/addUserMatchInfo', match.addUserMatchInfo(db));
+app.get('/multimatches', match.multimatches);
+app.get('/searchteams1', match.searchteams1);
+app.get('/fbPost', integration.fbPost);
+
+app.get('*', function(req, res){
+  res.send('what???', 404);
+});
+
 
 
 http.createServer(app).listen(app.get('port'), function(){

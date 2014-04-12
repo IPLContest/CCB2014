@@ -4,7 +4,8 @@ block content
     h1.
         Match List
     ul
-        each matchinfo, i in match
+        if status == "success"
+            each matchinfo, i in match
                 form(action='addUserMatchInfo', method='POST')
                     input(type='hidden', value='#{matchinfo.match_id}', name='matchid')
                     li
@@ -25,3 +26,5 @@ block content
                     br
                     br
                     input(type='submit', value='Save')
+        else
+            P #{statusmessage}

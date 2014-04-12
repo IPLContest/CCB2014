@@ -14,10 +14,11 @@ exports.userlist = function(db) {
 
 exports.userpoints = function(db) {
   return function(req, res) {
-    db.collection('user').aggregate(
+	var collection = db.get('users');
+    collection.aggregate(
 		{"$unwind": "$contest" } ,
 		{ $group:
-			{ 
+			{
 			"_id": '$_id',
 			"f_name" : {$first : '$first_name'},
 			"l_name" : {$first : '$last_name'},
@@ -27,21 +28,21 @@ exports.userpoints = function(db) {
 			}
 		},
 		{
-		$project : 
-			{		
+		$project :
+			{
 			'first_name':'$f_name',
 			'last_name':'$l_name',
 			'totalPoints' : { $add : [ '$t_mom_points', '$t_bonus_points', '$t_match_points' ] },
 			}
 		},
-		{ 
-		$sort : 
-			{ 
-			totalPoints : -1 
-			} 
+		{
+		$sort :
+			{
+			totalPoints : -1
+			}
 		},
 		function (err, items) {
-			if (err) return handleError(err);			
+			if (err) return handleError(err);
 			res.json(items);
 		}
 	)
