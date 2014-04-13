@@ -1,5 +1,4 @@
-doctype html
-html(xmlns='http://www.w3.org/1999/xhtml')
+doctype html(xmlns='http://www.w3.org/1999/xhtml')
 head
     meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -13,7 +12,7 @@ head
     link(href='/stylesheets/global.css', rel='stylesheet', type='text/css')
     link(href='/stylesheets/main.css', rel='stylesheet', type='text/css')
     script(type='text/javascript', src='/javascripts/jquery-1.7.2.min.js')
-    script(type='text/javascript', src='/javascripts/home.js') 	
+    script(type='text/javascript', src='/javascripts/home.js')
   body
     #content_container_main
       #header
@@ -24,26 +23,19 @@ head
           img(src='images/cartwheel-logo.png', width='175px')
         .primaryMenu
           ul
+            if record != null
+              li
+                a(href='home') Home
             li
-              a(href='userpoints') Participants Statistics
+              a(href='userstats') Participants Statistics
             li
               a(href='matchstats') Match Statistics
-      #signIn.signInBox
-        .fadeInBox
-          .signBoxHeadWrapper
-            span
-              span.newUserLink New User?
-              a#signUp.ml10.c666.txt-deco-under(href='javascript:void(0);') Sign Up
-            h2#loginHeader Log In
-          form#signin_form(method='post', action='login')
-            .inputArea
-              label(for='name') Lan ID
-              input#name.textbox(type='text', placeholder='Z000000', name='name')
-            .inputArea
-              label(for='pass') Password
-              input#password.textbox(type='password', placeholder='Enter Password', name='pass')
-            div.err_msg
-              p #{err}
-            div
-              button#signin-btn.sign-btn(type='submit') Log In
-        .clear
+          .userInfo
+            if record != null
+              label #{record.firstName} &nbsp;
+              | |
+              a.signout(href='javscript:void(0)') &nbsp;Sign Out
+      .errosection
+        | An error occured
+    #footer
+      h2 Target Premier League

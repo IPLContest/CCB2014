@@ -239,7 +239,7 @@ exports.addUserMatchInfo = function(db) {
     var teamid=req.param('team');
     var playerid=req.param('player');
      var usercollection = db.get('users');
-     usercollection.find({"_id":"A040255","contest": {$elemMatch:{"match_id":matchid}}},{},function(e,docs){
+     usercollection.find({"_id":req.lanId,"contest": {$elemMatch:{"match_id":matchid}}},{},function(e,docs){
          var doclength=docs.length;
         console.log("Doc Length");
         console.log(doclength);
@@ -248,16 +248,22 @@ exports.addUserMatchInfo = function(db) {
          console.log("Doc Length more than 1");
 
 
-     usercollection.update({ _id: "A040255"},{$push :{contest:{"match_id":matchid,"match_winner_entry":teamid,"mom_entry":playerid,"match_points" :0,
+     usercollection.update({ _id: req.lanId},{$push :{contest:{"match_id":matchid,"match_winner_entry":teamid,"mom_entry":playerid,"match_points" :0,
 "mom_points" : 0,"bonus_points" : 0}}}, function(err, records){
-           res.render('index', { err: 'Match Info is not valid' });
+           res.render('home', {
+                            "status" : "submitted",                            
+                             "statusmessage" : "Your entry has been submitted successfully."
+                        });
 
       });
 
      }else{
      console.log("Doc Length more than 1");
-     usercollection.update({ _id: "A040255", "contest.match_id" :matchid },{$set :{ "contest.$.match_winner_entry": teamid,"contest.$.mom_entry":playerid}}, function(err, records){
-          res.render('index', { err: 'Match Info is not valid' });
+     usercollection.update({ _id: req.lanId, "contest.match_id" :matchid },{$set :{ "contest.$.match_winner_entry": teamid,"contest.$.mom_entry":playerid}}, function(err, records){
+          res.render('home', {
+                            "status" : "submitted",                            
+                             "statusmessage" : "Your previous entry has been updated successfully."
+                        });
 
       });
 

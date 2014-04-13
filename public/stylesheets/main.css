@@ -1,0 +1,414 @@
+#header{
+    background-image: url("../images/masthead.jpg");
+    height: 120px;
+}
+#footer{
+    background-image: url("../images/footer-bg-texture.jpg");
+    height: 387px;
+}
+
+#content_container_main{
+    width : 100%;
+}
+.matchtime {
+    float: left;
+    margin-left: 190px;
+}
+.matchSection .top{
+	background-color: #333333;
+    border-bottom: 1px solid #333333;
+    color: #FFFFFF;
+    float: left;
+    font-size: 13px;
+    height: 102px;
+    left: -3px;
+    line-height: 160px;
+    margin-right: 15px;
+    position: relative;
+    text-align: center;
+    top: -8px;
+    width: 105px;
+}
+
+.matchSection{
+	 background-color: #FFFFFF;
+    border: 1px solid;
+    box-shadow: 4px 5px 1px #000000;
+    margin-bottom: 31px;
+    margin-left: 6%;
+    margin-top: 23px;
+    width: 63%;
+}
+
+.tLogo50x {
+	display: inline-block;
+	margin: 0;
+	width: 50px;
+	height: 50px;
+	background-image: url(../images/team-logos-50x.png);
+	background-repeat: no-repeat;
+	vertical-align: middle;
+	background-size: 100%;
+}
+
+.tLogo100x{
+	display: inline-block;
+	margin: 0;
+	width: 100px;
+	height: 100px;
+	background-image: url(../images/team-logos-100x.png);
+	background-repeat: no-repeat;
+	vertical-align: middle;
+	background-size: 100%;
+	float : left;
+}
+
+.teamlogo1{
+	float: left;
+    margin-left: 25px;
+    margin-top: 9px;
+}
+.teamlogo2{
+	float: right;
+    margin-right: 15px;
+    margin-top: 9px;
+}
+.tLogo100x.MI{
+	background-position: 0 -525px;
+}
+.tLogo100x.KKR{
+	background-position: 0 -315px;
+}
+.tLogo50x.MI{
+	background-position: 0 -275px;
+}
+
+.tLogo50x.KKR{
+	background-position: 0 -165px;
+}
+
+.teamlogo{
+	float : left;
+	padding: 6px;
+}
+.matchHeader{
+	border-bottom: 1px dotted #909090;
+   height: 81px;
+}
+.eventCompetitors h5{
+	float: left;
+	line-height: 50px;
+	padding: 0 10px;
+	font-size: 12px;
+	color: #909090;
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+.eventDetails h5{
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 27px;
+}
+
+.eventDetails {
+    padding: 5px;
+}
+
+.eventDetails p{
+	color: #676767;
+	font-size: 12px;
+	line-height: 15px;
+	margin-bottom: 3px;
+}
+
+.matchSectionMain{
+	background-image: url("../images/abu-dhabi.jpg");
+    background-position: 0 0;
+    height: 320px;
+    width: 100%;
+}
+
+.playerListDropDown a.selection{
+	background-color: #262626;
+    background-image: none;
+    border: 1px solid #262626;
+    border-radius: 3px 3px 0 0;
+    color: #FFFFFF;
+    text-shadow: 0 0 0;
+	display: block;
+    font-size: 12px;
+    font-weight: bold;
+    height: 25px;
+    line-height: 25px;
+    padding: 0;
+    text-align: center;
+}
+
+.playerListDropDown a.selection span{
+	background-image: url("../images/IPL-global-sprite.png");
+    background-position: -82px -80px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 4px;
+    width: 7px;
+	float :right;
+	margin-top : 10px;
+	margin-right : 4px;
+}
+.playerListDropDown a.selection:hover{
+	background-color:#333333;
+}
+.playerListDropDown ul{
+	background-clip: padding-box;
+    background-color: #FFFFFF;
+    border-color: #262626;
+    border-radius: 0 0 6px 6px;
+    border-style: solid;
+    border-width: 0 1px 1px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    display: none;
+    max-height: 210px;
+    overflow-y: auto;
+    width: 202px;
+}
+
+.playerListDropDown ul li:hover{
+	background-color : #EAEAEA;
+}
+
+.playerListDropDown{
+    text-align: center;
+	position: relative;
+}
+
+
+.matchFooter {
+    height: 56px;
+    width: 100%;
+	border-bottom: 1px dotted;
+}
+
+.playerListDropDown a{
+	color : black;
+}
+.bottom {
+    background: none repeat scroll 0 0 #333333;
+    height: 57px;
+    left: -3px;
+    position: relative;
+    width: 105px;
+}
+
+.momsection {
+	 background-color: #FFFFFF;
+    border: medium none;
+    border-radius: 0 0 6px 6px;
+    color: #000000;
+    float: right;
+    height: 0;
+    margin-right: 12px;
+    margin-top: -44px;
+    width: 24%;
+}
+
+
+.mombutton {
+    float: right;
+    margin-right: 10px;
+    margin-top: 4px;
+}
+.teamSelectionlabel{
+	 color: #909090;
+    float: left;
+    margin-top: 20px;
+    text-transform: uppercase;
+}
+.momlabel {
+    color: #909090;
+    float: left;
+    margin-left: 117px;
+    margin-top: -40px;
+    text-transform: uppercase;
+}
+
+.mombutton button{
+	background-color: #262626;
+    border: 1px solid;
+    color: #FFFFFF;
+    font-weight: bold;
+    height: 28px;
+    text-transform: uppercase;
+    width: 206px;
+}
+
+.matchFooterPredict {
+    background-color: #FFFFFF;
+    height: 38px;
+}
+.sideSection {
+    left: 76%;
+    position: absolute;
+    top: 145px;
+    width: 20%;
+}
+.sideSection .sectionheader {
+    background-color: #262626;
+    border-bottom: 1px solid;
+    color: #FFFFFF;
+    font-weight: bold;
+    height: 35px;
+    line-height: 26px;
+    text-align: center;
+}
+
+.sideSection .sectionbody {
+    line-height: 29px;
+    text-align: center;
+}
+.sideSection .section1{
+	margin-bottom : 20px;
+}
+.sideSection .sectionbody li {
+    background-color: #FFFFFF;
+    color: #909090;
+}
+
+.sideSection .sectionbody li  label.name {
+    float: left;
+    margin-left: 40px;
+}
+
+.userstatsSection {
+     background-color: #FFFFFF;
+    box-shadow: 3px 3px 1px #000000;
+    line-height: 29px;
+    margin-bottom: 20px;
+    margin-left: 13%;
+    margin-top: 20px;
+    max-height: 600px;
+    overflow-y: auto;
+    text-align: center;
+    width: 71%;
+}
+
+.userstatsSection  .sectionheader {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+.userstatsSection  .hidden{
+    display : none;
+}
+
+
+.userstatsSection table {
+   line-height: 27px;
+    text-align: center;
+    width: 100%;
+}
+.userstatsSection table th {
+    border: 1px solid;
+}
+.userstatsSection .sectionheader span{
+	background-image: url("../images/IPL-global-sprite.png");
+    background-position: -82px -80px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 4px;
+    width: 7px;
+	float :right;
+	margin-top : 10px;
+	margin-right : 10px;
+}
+
+.userInfo {
+    color: #FFFFFF;
+    float: right;
+    margin-right: 51px;
+}
+
+.features-table {
+  width: 100%;
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-shadow: 0 1px 0 #fff;
+  color: #2a2a2a;
+  background: #fafafa;  
+  background-image: linear-gradient(top, #fff, #eaeaea, #fff);
+}
+
+.features-table td {
+  height: 50px;
+  line-height: 50px;
+  padding: 0 20px;
+  border-bottom: 1px solid #cdcdcd;
+  box-shadow: 0 1px 0 white;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/*Body*/
+.features-table tbody td {
+  text-align: center;
+  font: normal 12px Verdana, Arial, Helvetica;
+  width: 150px;
+}
+
+.features-table tbody td:first-child {
+  width: auto;
+  text-align: left;
+}
+
+.features-table td:nth-child(2), 
+.features-table td:nth-child(3) {
+  background: #efefef;
+  background: rgba(144,144,144,0.15);
+  border-right: 1px solid white;
+}
+
+
+.features-table td:nth-child(4) {
+  background: #e7f3d4;  
+  background: rgba(184,243,85,0.3);
+}
+
+/*Header*/
+.features-table thead td {
+  font: bold 1.3em 'trebuchet MS', 'Lucida Sans', Arial;  
+  border-radius-topright: 10px;
+  border-radius-topleft: 10px; 
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top: 1px solid #eaeaea; 
+}
+
+.features-table thead td:first-child {
+  border-top: none;
+}
+
+/*Footer*/
+.features-table tfoot td {
+  font: bold 1.4em Georgia;  
+  border-radius-bottomright: 10px;
+  border-radius-bottomleft: 10px; 
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom: 1px solid #dadada;
+}
+
+.features-table tfoot td:first-child {
+  border-bottom: none;
+}
+
+.bodyText {
+     font-family:georgia, serif;
+     color:#3B200F;
+     font-size:20px;
+     font-weight:bold;
+     line-height:125%;
+     margin-left : 40px;
+     text-align:left;
+}
+
