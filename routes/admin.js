@@ -48,6 +48,7 @@ exports.adminSubmit = function(db) {
 		var teamid=req.param('team');
 		var playerid=req.param('player');
 		var matchUpdate = db.get('match');
+		var usercollection = db.get('users');
 		matchUpdate.find({"_id": matchid},{},function(e,docs){
 			var doclength=docs.length;
 			console.log("Doc Length");
@@ -62,6 +63,42 @@ exports.adminSubmit = function(db) {
 				matchUpdate.update({ _id: matchid},{$push :{"match_winner":teamid,"man_of_the_match":playerid}}, function(err, records){
 					res.render('adminSubmit', { err: 'Match Info is not valid' });
 				});
+			}
+        });
+		
+		usercollection.find({"contest": {$elemMatch:{"match_id":matchid}}},{},function(e,docs){
+			var doclength=docs.length;
+			if(doclength < 1){
+				console.log('None of the players contested for the match :'+matchid);
+			}else{
+				//console.log("Doc Length more than 1");
+				console.log("Docs...");
+				//Logic to update points
+				for(i=0; i< doclength; i++) {
+					  //do what you gotta do
+					  console.log('Team id - '+teamid+' Player id :'+playerid);
+					  
+					  var contestLength = docs[i].contest.length;
+					  for(j=0; j< contestLength; j++) {
+							if(matchid==docs[i].contest[j].match_id && docs[i].contest[j].match_winner_entry==teamid && docs[i].contest[j].mom_entry==playerid){
+								console.log('Both team and mom matched for the user - '+docs[i].first_name);								
+								usercollection.update({ 'contest.match_id': matchid},{$set :{ "contest.$.match_points": 10,"contest.$.mom_points":10,"contest.$.bonus_points":10}}, function(err, records){
+									res.render('index', { err: 'Match Info is not valid' });
+								});
+							} else if(matchid==docs[i].contest[j].match_id && docs[i].contest[j].match_winner_entry==teamid && docs[i].contest[j].mom_entry!=playerid){
+								console.log('Only team matched for the user - '+docs[i].first_name);
+								usercollection.update({ 'contest.match_id': matchid},{$set :{ "contest.$.match_points": 10,"contest.$.mom_points":0,"contest.$.bonus_points":0}}, function(err, records){
+									res.render('index', { err: 'Match Info is not valid' });
+								});
+							}else if(matchid==docs[i].contest[j].match_id && docs[i].contest[j].match_winner_entry!=teamid && docs[i].contest[j].mom_entry==playerid){
+								console.log('Only mom matched for the user - '+docs[i].first_name);
+								usercollection.update({ 'contest.match_id': matchid},{$set :{ "contest.$.match_points": 0,"contest.$.mom_points":10,"contest.$.bonus_points":0}}, function(err, records){
+									res.render('index', { err: 'Match Info is not valid' });
+								});
+							}
+					  }
+					 
+				}
 			}
         });
 
