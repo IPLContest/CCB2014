@@ -186,10 +186,14 @@ exports.login = function(db,request) {
                 if(rec[0].userActiveFlag == 'N'){
                     res.render('index', { err: 'Lan id is not validated' });
                 }else{
+                    console.log("*** Redirecting to home ****");
                     var cipher = crypto.createCipher(algorithm, key);  
                     var encrypted = cipher.update(name, 'utf8', 'hex') + cipher.final('hex');
                      res.cookie('lanId',encrypted,{httpOnly: true });
-                    res.render('home', { record: rec[0] });
+                     res.statusCode = 302;
+                     res.setHeader("Location", '/home');
+                     res.end();
+                   // res.render('home', { record: rec[0] });
                 }
             }else{
                 res.render('index', { err: 'Lan id or password is not valid' });
