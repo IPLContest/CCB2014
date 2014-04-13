@@ -23,7 +23,10 @@ exports.index = function(db) {
 
             collection.find({"_id" : decrypted},function(errData,rec){
                 if(rec !=null && rec.length > 0){
-                    res.render('home', { "record": rec[0]});
+                  //  res.render('home', { "record": rec[0]});
+                      res.statusCode = 302;
+                     res.setHeader("Location", '/home');
+                     res.end();
                 }else{
                 }
             });
