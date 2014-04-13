@@ -15,8 +15,7 @@ exports.userlist = function(dbv) {
 
 exports.userpoints = function(dbv) {
   return function(req, res) {
-
-    dbv.collection('users').aggregate(
+   dbv.collection('users').aggregate(
 		{"$unwind": "$contest" } ,
 		{ $group:
 			{
