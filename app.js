@@ -4,7 +4,6 @@
  */
 
 var express = require('express');
-var step = require('step');
 var crypto = require('crypto');
 var algorithm = 'aes256'; // or any other algorithm supported by OpenSSL
 var key = 'password';
@@ -51,11 +50,12 @@ app.use(function(req, res, next) {
     }
 
     );
-
+if(cookies['lanId'] != null){
   var decipher = crypto.createDecipher(algorithm, key);
-  var decrypted = decipher.update(cookies['lanId'], 'hex', 'utf8') + decipher.final('utf8');     
+  var decrypted = decipher.update(cookies['lanId'], 'hex', 'utf8') + decipher.final('utf8');
   req.lanId = decrypted;
-  console.log("User Id: "+decrypted);     
+  console.log("User Id: "+decrypted);
+}
   next();
 });
 
@@ -97,4 +97,3 @@ app.post('/adminSubmit', admin.adminSubmit(db));
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-	

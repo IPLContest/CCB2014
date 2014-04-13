@@ -12,6 +12,7 @@
     "monk": "*",
 	  "mongoskin": "*",
     "request" : "*",
-    "nodemailer": "*"
+    "nodemailer": "*",
+    "date-format-lite":"*"
   }
 }
