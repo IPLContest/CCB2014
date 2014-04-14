@@ -42,6 +42,14 @@ app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+ // Handle 500
+  app.use(function(error, req, res, next) {
+      res.status(500);
+     res.render('500', {title:'500: Internal Server Error', error: error});
+  });
+
+
 /*Intercept every request, get lanId from cookie and set it in the request */
 app.use(function(req, res, next) {
    var cookies = {};
@@ -108,6 +116,12 @@ app.get('/admin', admin.admin(db));
 app.post('/adminData', admin.adminData(db));
 app.post('/adminSubmit', admin.adminSubmit(db));
 app.get('/signout', routes.signout());
+
+app.get('*', function(req, res){
+  res.render('404', 404);
+});
+
+
 
 
 
