@@ -92,7 +92,7 @@ app.post('/addUserMatchInfo', match.addUserMatchInfo(db));
 app.get('/multimatches', match.multimatches);
 app.get('/searchteams1', match.searchteams1);
 app.get('/admin', admin.admin(db));
-app.post('/adminData', admin.adminData(dbv));
+app.post('/adminData', admin.adminData(db));
 app.post('/adminSubmit', admin.adminSubmit(db));
 
 

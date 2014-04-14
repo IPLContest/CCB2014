@@ -10,7 +10,7 @@
     "jade": "*",
     "mongodb": "*",
     "monk": "*",
-	  "mongoskin": "*",
+	"mongoskin": "*",
     "request" : "*",
     "nodemailer": "*",
     "date-format-lite":"*"
