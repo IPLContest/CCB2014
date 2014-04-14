@@ -1,26 +1,26 @@
 extends layout
 
 block content
-	h1	Data successfully submitted :  
-		ul
-			each matchinfo, i in match
-				li
-					| Match Id : #{matchinfo._id} 
-					br
-				li
-					| Match date : #{matchinfo.date}
-					br
-				li
-					| Team_1 : #{matchinfo.team_1_id}
-					br
-				li
-					| Team_2 : #{matchinfo.team_2_id}
-					br
-				li
-					| match_winner : #{matchinfo.match_winner}
-					br
-				li
-					| man_of_the_match : #{matchinfo.man_of_the_match}
+	h1	Data successfully submitted	:  
+	ul
+		each matchinfo, i in match
+			li
+				| Match Id : #{matchinfo._id} 
+				br
+			li
+				| Match date : #{matchinfo.date}
+				br
+			li
+				| Team_1 : #{matchinfo.team_1_id}
+				br
+			li
+				| Team_2 : #{matchinfo.team_2_id}
+				br
+			li
+				| match_winner : #{matchinfo.match_winner}
+				br
+			li
+				| man_of_the_match : #{matchinfo.man_of_the_match}
 					
 		
 	h2  Thank you for submitting the data.
