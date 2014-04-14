@@ -40,7 +40,9 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
+app.use(express.static(path.join(__dirname, 'public')));
 
+/*Intercept every request, get lanId from cookie and set it in the request */
 app.use(function(req, res, next) {
    var cookies = {};
        req.headers.cookie && req.headers.cookie.split(';').forEach(function( cookie ) {
@@ -50,19 +52,20 @@ app.use(function(req, res, next) {
     }
 
     );
+
 if(cookies['lanId'] != null){
   var decipher = crypto.createDecipher(algorithm, key);
   var decrypted = decipher.update(cookies['lanId'], 'hex', 'utf8') + decipher.final('utf8');
   req.lanId = decrypted;
   console.log("User Id: "+decrypted);
+  
+} else {
+   req.lanId = null; 
 }
-  next();
+ next(); 
 });
 
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
-
-
 
 // development only
 if ('development' == app.get('env')) {

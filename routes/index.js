@@ -10,21 +10,14 @@ var verfiyUrl = 'http://localhost:3000/verifyUser';
 
 exports.index = function(db) {
     return function(req, res) {
-         var cookies = {};
-         req.headers.cookie && req.headers.cookie.split(';').forEach(function( cookie ) {
-            var parts = cookie.split('=');
-            cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
-        });
-        
-        if(cookies['lanId'] != null){
+                
+        if(req.lanId!= null){
             var collection = db.get('users');
-            var decipher = crypto.createDecipher(algorithm, key);
-            var decrypted = decipher.update(cookies['lanId'], 'hex', 'utf8') + decipher.final('utf8');
-
-            collection.find({"_id" : decrypted},function(errData,rec){
+           
+            collection.find({"_id" : req.lanId},function(errData,rec){
                 if(rec !=null && rec.length > 0){
                   //  res.render('home', { "record": rec[0]});
-                      res.statusCode = 302;
+                     res.statusCode = 302;
                      res.setHeader("Location", '/home');
                      res.end();
                 }else{
