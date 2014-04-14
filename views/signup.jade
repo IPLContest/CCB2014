@@ -29,16 +29,13 @@ head
               a(href='userpoints') Participants Statistics
             li
               a(href='rules') Rules
-          .signUpBtn
-            a(href="signup") Sign Up
       #signIn.signInBox
         .fadeInBox
           .signBoxHeadWrapper
             span
-              span.newUserLink New User?
-              a#signUp.ml10.c666.txt-deco-under(href='signup') Sign Up
-            h2#loginHeader Log In
-          form#signin_form(method='post', action='login')
+              a#signUp.ml10.c666.txt-deco-under(href='/') Log In
+            h2#loginHeader Sign Up
+          form#signin_form(method='post', action='register')
             .inputArea
               label(for='name') Lan ID
               input#name.textbox(type='text', placeholder='Z000000', name='name')
@@ -48,5 +45,5 @@ head
             div.err_msg
               p #{err}
             div
-              button#signin-btn.sign-btn(type='submit') Log In
+              button#signin-btn.sign-btn(type='submit') Sign Up
         .clear

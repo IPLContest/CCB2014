@@ -43,10 +43,18 @@ exports.userpoints = function(dbv) {
 		},
 		function (err, items) {
 			if (err) return handleError(err);
-			res.render('userstats', {
+			console.log(req.headers.accept);
+			console.log(items.slice(0,4));
+			if(req.headers.accept == "application/json"){
+				res.json(items.slice(0,4));
+			}else{
+			console.log("****** from user.js****");
+				console.log(res.locals.record);
+				res.render('userstats', {
                 "status" : "success",   
-            	"points" : items,
-        	});
+            	"points" : items
+				});
+			}
 		}
 	)
   }

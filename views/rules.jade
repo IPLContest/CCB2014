@@ -1,0 +1,85 @@
+doctype html(xmlns='http://www.w3.org/1999/xhtml')(xmlns='http://www.w3.org/1999/xhtml')
+head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    title Approve Offer
+    meta(content='no-cache', http-equiv='cache-control')
+    meta(content='IPL Contest, IPL, Cricket, match', name='keywords')
+    meta(content='IPL Contest, IPL, Cricket, match', name='description')
+    meta(name='msvalidate.01', content='to be filled in')
+    meta(name='verify-v1', content='to be filled in')
+    link(href='Page URL - TBD by backend', rel='canonical')
+    link(href='/stylesheets/global.css', rel='stylesheet', type='text/css')
+    link(href='/stylesheets/main.css', rel='stylesheet', type='text/css')
+    script(type='text/javascript', src='/javascripts/jquery-1.7.2.min.js')
+    script(type='text/javascript', src='/javascripts/home.js')
+  body
+    #content_container_main
+      #header
+        .primaryMenu1
+        #logo TARGET PREMIER LEAGUE
+        .text
+          label Powered by
+          img(src='images/cartwheel-logo.png', width='175px')
+        .primaryMenu
+          ul
+            li
+              a(href='home') Home
+            li
+              a(href='userpoints') Participants Statistics
+            li
+              a(href='rules') Rules
+          .userInfo
+            if record != null
+              label #{record.first_name} &nbsp;
+              | |
+              a.signout(href='signout') &nbsp;Sign Out
+      .rulestatsSection
+        .section1
+          .sectionheader
+            | Rules
+          .sectionbody
+            table
+              tbody
+                tr
+                  td 1. Every match winner prediction will fetch you 10 points
+                tr
+                  td 2. Every Man Of The Match prediction will fetch you 10 points
+                tr
+                  td
+                    | 3. If both the predictions are correct you will get an additional 10 bonus points
+                tr
+                  td 4. You cannot submit an entry after the match is started 
+                tr
+                  td 5. You can submit any number of times but previous entry will be overridden
+    #footer
+      .footerdata
+        .footersection
+          img(src='images/24ipl.jpg')
+        .footersection
+          ul
+            li.Bold Quick Links
+            li Home
+            li Participants Statistics
+            li Match Statistics
+        .footersection
+          ul
+            li.Bold Teams
+            li Mumbai Indians
+            li Chennai Super Kings
+            li Delhi Daredevils
+            li Kings X1 Punjab
+            li Kolkata Knight Riders
+            li Rajasthan Royals
+            li Delhi Daredevils
+            li Delhi Daredevils
+        .footersection
+          ul
+            li.Bold Quick Links
+            li Home
+            li Participants Statistics
+            li Match Statistics
+      .clearline
+      .footerbottom
+        label Target Premier League |
+        label Powered by Cartwheel 

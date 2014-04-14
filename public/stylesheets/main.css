@@ -86,6 +86,59 @@
 .tLogo50x.KKR{
 	background-position: 0 -165px;
 }
+.eventCompetitors .tLogo50x{
+	margin-left: 10px;
+}
+.tLogo50x.KXIP {
+    background-position: 0 -220px;
+}
+
+
+.tLogo50x.DDL {
+    background-position: 0 -110px;
+}
+
+
+.tLogo50x.CSK {
+    background-position: 0 -55px;
+}
+.tLogo50x.RCB {
+    background-position: 0 -330px;
+}
+
+
+.tLogo50x.RR {
+    background-position: 0 -385px;
+}
+
+
+.tLogo50x.SRH {
+    background-position: 0 -439px;
+}
+
+.tLogo100x.RCB {
+    background-position: 0 -630px;
+}
+
+.tLogo100x.RR {
+    background-position: 0 -735px;
+}
+
+.tLogo100x.SRH {
+    background-position: 0 -840px;
+}
+
+.tLogo100x.KXIP {
+    background-position: 0 -420px;
+}
+
+.tLogo100x.DDL {
+    background-position: 0 -210px;
+}
+
+.tLogo100x.CSK {
+    background-position: 0 -105px;
+}
 
 .teamlogo{
 	float : left;
@@ -96,13 +149,14 @@
    height: 81px;
 }
 .eventCompetitors h5{
-	float: left;
-	line-height: 50px;
-	padding: 0 10px;
-	font-size: 12px;
 	color: #909090;
-	text-transform: uppercase;
-	font-weight: normal;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 50px;
+    margin-top: 5px;
+    padding: 0 10px;
+    text-transform: uppercase;
 }
 
 .eventDetails h5{
@@ -264,7 +318,7 @@
 
 .sideSection .sectionbody {
     line-height: 29px;
-    text-align: center;
+    text-align: left;
 }
 .sideSection .section1{
 	margin-bottom : 20px;
@@ -275,11 +329,19 @@
 }
 
 .sideSection .sectionbody li  label.name {
-    float: left;
+     float: left;
     margin-left: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 165px;
 }
 
-.userstatsSection {
+.rulestatsSection table td{
+	text-align :left;
+	padding: 3px 0 3px 26px;
+}
+.userstatsSection ,.rulestatsSection{
      background-color: #FFFFFF;
     box-shadow: 3px 3px 1px #000000;
     line-height: 29px;
@@ -292,11 +354,17 @@
     width: 71%;
 }
 
-.userstatsSection  .sectionheader {
+.userstatsSection  .sectionheader,.rulestatsSection  .sectionheader {
     background-color: #000000;
     color: #FFFFFF;
+    font-weight: bold;
+    padding: 2px;
 }
 
+.sectionheader .tLogo50x{
+	margin-left: 10px;
+    margin-right: 15px;
+}
 .userstatsSection  .hidden{
     display : none;
 }
@@ -307,9 +375,7 @@
     text-align: center;
     width: 100%;
 }
-.userstatsSection table th {
-    border: 1px solid;
-}
+
 .userstatsSection .sectionheader span{
 	background-image: url("../images/IPL-global-sprite.png");
     background-position: -82px -80px;
@@ -318,7 +384,7 @@
     height: 4px;
     width: 7px;
 	float :right;
-	margin-top : 10px;
+	margin-top : 20px;
 	margin-right : 10px;
 }
 
@@ -328,79 +394,72 @@
     margin-right: 51px;
 }
 
-.features-table {
-  width: 100%;
-  margin: 0 auto;
-  border-collapse: separate;
-  border-spacing: 0;
-  text-shadow: 0 1px 0 #fff;
-  color: #2a2a2a;
-  background: #fafafa;  
-  background-image: linear-gradient(top, #fff, #eaeaea, #fff);
+.footersection {
+    color: #FFFFFF;
+    float: left;
+    height: 66%;
+    line-height: 24px;
+    margin-left: 65px;
+    margin-top: 27px;
+    padding: 18px;
+    text-align: center;
+    width: 14%;
 }
 
-.features-table td {
-  height: 50px;
-  line-height: 50px;
-  padding: 0 20px;
-  border-bottom: 1px solid #cdcdcd;
-  box-shadow: 0 1px 0 white;
-  white-space: nowrap;
-  text-align: center;
+.Bold {
+    font-weight: bold;
 }
 
-/*Body*/
-.features-table tbody td {
-  text-align: center;
-  font: normal 12px Verdana, Arial, Helvetica;
-  width: 150px;
+.footersection > img {
+    width: 188px;
 }
 
-.features-table tbody td:first-child {
-  width: auto;
-  text-align: left;
+.footerbottom {
+	border-top: 1px solid #565656;
+	color: #FFFFFF;
+	font-size: 14px;
+	line-height: 24px;
+	margin-left: 13%;
+	margin-top: 1%;
+	text-align: center;
+	width: 77%;
 }
 
-.features-table td:nth-child(2), 
-.features-table td:nth-child(3) {
-  background: #efefef;
-  background: rgba(144,144,144,0.15);
-  border-right: 1px solid white;
+.clearline {
+    clear: both;
 }
 
-
-.features-table td:nth-child(4) {
-  background: #e7f3d4;  
-  background: rgba(184,243,85,0.3);
+table { 
+color: #333;
+font-family: Times New Roman;
+border-collapse: collapse;
+border-spacing: 0;
+width: 100%;
 }
 
-/*Header*/
-.features-table thead td {
-  font: bold 1.3em 'trebuchet MS', 'Lucida Sans', Arial;  
-  border-radius-topright: 10px;
-  border-radius-topleft: 10px; 
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  border-top: 1px solid #eaeaea; 
+td, th { 
+border: 1px solid transparent; /* No more visible border */
+height: 30px; 
+transition: all 0.3s;  /* Simple transition for hover effect */
 }
 
-.features-table thead td:first-child {
-  border-top: none;
+th {
+background: #DFDFDF;  /* Darken header a bit */
+font-weight: bold;
 }
 
-/*Footer*/
-.features-table tfoot td {
-  font: bold 1.4em Georgia;  
-  border-radius-bottomright: 10px;
-  border-radius-bottomleft: 10px; 
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom: 1px solid #dadada;
+td {
+background: #FAFAFA;
+text-align: center;
 }
 
-.features-table tfoot td:first-child {
-  border-bottom: none;
-}
+/* Cells in even rows (2,4,6...) are one color */ 
+tr:nth-child(even) td { background: #F1F1F1; }   
+
+/* Cells in odd rows (1,3,5...) are another (excludes header cells)  */ 
+tr:nth-child(odd) td { background: #FEFEFE; }  
+
+tr td:hover { background: #666; color: #FFF; } /* Hover cell effect! */
 
 .bodyText {
      font-family:georgia, serif;
@@ -412,3 +471,34 @@
      text-align:left;
 }
 
+
+.error_msg > label#err_msg_label{
+    color: #FF0000;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+.error_msg > label#succ_msg_label{
+    color: green;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+.bodyText p.statusmessage{
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.comingsoon{
+	border: 1px solid #FFFFFF;
+    border-radius: 10px;
+    margin-left: 32%;
+    opacity: 0.75;
+	 margin-top: 4%;
+}

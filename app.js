@@ -59,10 +59,21 @@ if(cookies['lanId'] != null){
   req.lanId = decrypted;
   console.log("User Id: "+decrypted);
   
+   var collection = db.get('users');          
+   collection.find({"_id" : req.lanId},function(errData,rec){
+		res.locals.record = rec[0];
+		 if(!(rec !=null && rec.length > 0)){
+			 res.render('index', { title: 'Hello, World!' });
+		 }
+		
+		next(); 
+	});
+  
 } else {
    req.lanId = null; 
+    next(); 
 }
- next(); 
+
 });
 
 app.use(app.router);
@@ -73,12 +84,14 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index(db));
+app.get('/signup', routes.signup(db));
 app.get('/home', routes.home(db));
 app.post('/register', routes.register(db,request));
 app.post('/login', routes.login(db,request));
 app.get('/verifyUser', routes.verifyUser(db,request));
 app.get('/matchstats', routes.matchstats(db));
 app.get('/userstats', routes.userstats(db));
+app.get('/rules', routes.rules());
 
 app.get('/userlist', user.userlist(dbv));
 app.get('/userpoints', user.userpoints(dbv));
@@ -94,6 +107,7 @@ app.get('/searchteams1', match.searchteams1);
 app.get('/admin', admin.admin(db));
 app.post('/adminData', admin.adminData(db));
 app.post('/adminSubmit', admin.adminSubmit(db));
+app.get('/signout', routes.signout());
 
 
 

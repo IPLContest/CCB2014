@@ -23,16 +23,15 @@ head
           img(src='images/cartwheel-logo.png', width='175px')
         .primaryMenu
           ul
-            if record != null
             li
-                a(href='home') Home
+              a(href='home') Home
             li
               a(href='userpoints') Participants Statistics
             li
-              a(href='matchstats') Match Statistics
+              a(href='rules') Rules
           .userInfo
             if record != null
-              label #{record.firstName} &nbsp;
+              label #{record.first_name} &nbsp;
               | |
               a.signout(href='javscript:void(0)') &nbsp;Sign Out
       .userstatsSection

@@ -250,7 +250,7 @@ exports.addUserMatchInfo = function(db) {
 
      usercollection.update({ _id: req.lanId},{$push :{contest:{"match_id":matchid,"match_winner_entry":teamid,"mom_entry":playerid,"match_points" :0,
 "mom_points" : 0,"bonus_points" : 0}}}, function(err, records){
-           res.render('home', {
+           res.render( {
                             "status" : "submitted",                            
                              "statusmessage" : "Your entry has been submitted successfully."
                         });
@@ -260,7 +260,7 @@ exports.addUserMatchInfo = function(db) {
      }else{
      console.log("Doc Length more than 1");
      usercollection.update({ _id: req.lanId, "contest.match_id" :matchid },{$set :{ "contest.$.match_winner_entry": teamid,"contest.$.mom_entry":playerid}}, function(err, records){
-          res.render('home', {
+          res.json( {
                             "status" : "submitted",                            
                              "statusmessage" : "Your previous entry has been updated successfully."
                         });

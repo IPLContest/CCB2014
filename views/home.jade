@@ -2,7 +2,7 @@ doctype html(xmlns='http://www.w3.org/1999/xhtml')
 head
     meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    title Approve Offer
+    title IPL Contest
     meta(content='no-cache', http-equiv='cache-control')
     meta(content='IPL Contest, IPL, Cricket, match', name='keywords')
     meta(content='IPL Contest, IPL, Cricket, match', name='description')
@@ -13,6 +13,7 @@ head
     link(href='/stylesheets/main.css', rel='stylesheet', type='text/css')
     script(type='text/javascript', src='/javascripts/jquery-1.7.2.min.js') 	
     script(type='text/javascript', src='/javascripts/home.js')
+    script(type='text/javascript', src='/javascripts/main.js')
   body
     #content_container_main
        #header
@@ -28,32 +29,34 @@ head
             li
               a(href='userpoints') Participants Statistics
             li
-              a(href='matchstats') Match Statistics
+              a(href='rules') Rules
           .userInfo
             if record != null
-              label #{record.firstName} &nbsp;
+              label #{record.first_name} &nbsp;
               | |
-              a.signout(href='javscript:void(0)') &nbsp;Sign Out
+              a.signout(href='signout') &nbsp;Sign Out
 if status == "success"
   each matchinfo, i in match
-    form(action='addUserMatchInfo', method='POST')
-      input(type='hidden', value='#{matchinfo.match_id}', name='matchid')
-      input(type='hidden', value='0', id='player' name='player') 
+    form(action='javascript:void(0)', method='POST')
+      input(type='hidden', value='#{matchinfo.match_id}',id='matchid', name='matchid')
+      input(type='hidden', value='0', id='player', name='player') 
       .mainContainer
         .matchSection
           .matchHeader
             .top
-              | Match 2
+              | Match #{matchinfo.match_id}
             .teamSelectionlabel
               label Please predict Winner
             .eventCompetitors
               .teamlogo
-                h5
                 input(type='radio', radio='radio', value='#{matchinfo.teams[0]._id}', name='team') 
-                #{matchinfo.teams[0].team_title}= matchinfo.teams[0].team_title
-                  h5 VS
-                input(type='radio', radio='radio', value='#{matchinfo.teams[1]._id}', name='team') 
-                #{matchinfo.teams[1].team_title}= matchinfo.teams[1].team_title
+                label #{matchinfo.teams[0].team_title}
+                .tLogo50x(class="#{matchinfo.teams[0].team_css_name}")
+              h5 VS
+              .teamlogo
+                input(type='radio', radio='radio', value='#{matchinfo.teams[1]._id}', name='team')
+                label #{matchinfo.teams[1].team_title}
+                .tLogo50x(class="#{matchinfo.teams[1].team_css_name}")
             .matchtime
               p.matchDate 2:30pm GMT (8:00pm IST), Wednesday 16th April 2014 
           .matchFooter
@@ -71,52 +74,55 @@ if status == "success"
                            li
                              a(data-team-id='#{player.player_id}', href='javascript:void(0)') #{player.name}
           .matchFooterPredict
+            .error_msg
+              label#err_msg_label			
             .mombutton
               button#Predict-btn.Predict-btn(type='submit') Predict Winners
           .matchSectionMain
             .teamlogo1
-              .tLogo100x.MI
-              img(src='images/107.png')
+              .tLogo100x(class="#{matchinfo.teams[0].team_css_name}")
+              img(src='images/#{matchinfo.teams[0].team_image}')
             .teamlogo2
-              .tLogo100x.KKR
-              img(src='images/84.png')
+              .tLogo100x(class="#{matchinfo.teams[1].team_css_name}")
+              img(src='images/#{matchinfo.teams[1].team_image}')
    .sideSection
       .section1
         .sectionheader
           | TOP RANKERS
         .sectionbody
           ul
-            li
-              label.name ABCDEDE
-              label.points 10
-            li
-              label.name ABCDEDE
-              label.points 10
-            li
-              label.name ABCDEDE
-              label.points 10
-            li
-              label.name ABCDEDE
-              label.points 10
-      .section2
-        .sectionheader
-          | PREVIOUS WINNERS
-        .sectionbody
+    #footer
+      .footerdata
+        .footersection
+          img(src='images/24ipl.jpg')
+        .footersection
           ul
-            li
-              label.name ABCDEDE
-              label.points 10
-            li
-              label.name ABCDEDE
-              label.points 10
-            li
-              label.name ABCDEDE
-              label.points 10
-            li
-              label.name ABCDEDE
-              label.points 10
+            li.Bold Quick Links
+            li Home
+            li Participants Statistics
+            li Match Statistics
+        .footersection
+          ul
+            li.Bold Teams
+            li Mumbai Indians
+            li Chennai Super Kings
+            li Delhi Daredevils
+            li Kings X1 Punjab
+            li Kolkata Knight Riders
+            li Rajasthan Royals
+            li Delhi Daredevils
+            li Delhi Daredevils
+        .footersection
+          ul
+            li.Bold Quick Links
+            li Home
+            li Participants Statistics
+            li Match Statistics
+      .clearline
+      .footerbottom
+        label Target Premier League | 
+        label Powered by Cartwheel 
 else
    br
    br
-  .bodyText
-   P #{statusmessage}
+   img(class='comingsoon',src='images/cs.jpg')

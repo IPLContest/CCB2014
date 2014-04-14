@@ -28,6 +28,12 @@ exports.index = function(db) {
         }
     };
 };
+
+exports.signup = function(db) {
+    return function(req, res) {
+		res.render('signup', { title: 'Hello, World!' });
+	};
+};
 exports.pointstable = function(req, res){
   res.render('pointstable', { title: 'IPL-2014 score board..!!' });
 };
@@ -40,8 +46,7 @@ exports.home = function(db) {
         if(req.lanId != null){
             var collection = db.get('users');
           
-            collection.find({"_id" : req.lanId},function(errData,rec){
-                if(rec !=null && rec.length > 0){
+       
 
                      console.log("Found user");
 
@@ -75,33 +80,21 @@ exports.home = function(db) {
                         console.log(docs);
                         res.render('home', {
                             "status" : "success",   
-                            "match" : docs,
-                            "record" : rec[0]
+                            "match" : docs
                         });
-      
 
                     });
-
-            }
-
+				}
 
         }else {
              res.render('home', {
                             "status" : "nomatch",   
-                            "record" : rec[0],
                             "statusmessage" : "There are no matches today. Check back with us tomorrow."
             });
         }
 
     });
 
-
-
-
-                  //  res.render('home', { "record": rec[0]});
-                }else{
-                }
-            });
         }else{
             res.render('index', { title: 'Hello, World!' });
         }
@@ -111,7 +104,7 @@ exports.home = function(db) {
 exports.register = function(db,request) {
     return function(req, res) {
         var lanId = req.param('name');
-        request.get("http://localhost:8080/omt/secure/public/checkLanIdExist.do?lanId="+lanId, function (err, res1, body) {
+        request.get("http://http://xsslx0004.target.com:11026/omt/secure/public/checkLanIdExist.do?lanId="+lanId, function (err, res1, body) {
             if (!err) {
                 var resultsObj = JSON.parse(body);
                 if(resultsObj.responseType.responseCode == 0){
@@ -122,7 +115,7 @@ exports.register = function(db,request) {
                     var emailId = resultsObj.responseType.emailId;
                     
                     var collection = db.get('users');
-                    var document = {"_id":name, "pass" : pass ,"firstName" : firstName ,"lastName" :lastName,"emailId" :emailId,"userActiveFlag" : 'N'};
+                    var document = {"_id":name, "password" : pass ,"first_name" : firstName ,"last_name" :lastName,"emailId" :emailId,"userActiveFlag" : 'N'};
                     
                     collection.find({"_id" : name},function(errData,rec){
                         console.log(rec);
@@ -138,7 +131,7 @@ exports.register = function(db,request) {
                                 });
                                 smtpTransport.sendMail({
                                    from: "mayur.vaid@target.com", // sender address
-                                   to: "mayur.vaid@target.com", // comma separated list of receivers
+                                   to: records.emailId, // comma separated list of receivers
                                    subject: "Verify Email Address", // Subject line
                                    text: verfiyUrl +"?lanId=" +encrypted // plaintext body
                                 }, function(error, response){
@@ -149,19 +142,19 @@ exports.register = function(db,request) {
                                    }
                                 });
                             });
-                            res.render('index', { err: 'please verify email address' });
+                            res.render('signup', { err: 'please verify email address' });
                         }else{
-                            res.render('index', { err: 'Lan id already exist' });
+                            res.render('signup', { err: 'Lan id already exist' });
                         }
                     });
                     
                 }else{
                     console.log("error ");
-                    res.render('index', { err: 'Lan id is not valid' });
+                    res.render('signup', { err: 'Lan id is not valid' });
                 }
             }else{
              console.log("err"+err);
-            res.render('index', { err: 'Invalid Data' });
+            res.render('signup', { err: 'Invalid Data' });
             }
         });
   };
@@ -212,10 +205,16 @@ exports.verifyUser = function(db,request) {
                 console.log(records.lanId);
                 if(err){
                     console.log(err);
-                    res.render('index', { err: 'Lan id is not valid' });
+                     res.statusCode = 302;
+                     res.setHeader("Location", '/');
+                     res.end();
                 }
             });
-            res.render('home', { title: 'Hello, World!' });
+             console.log("*** Redirecting to home ****");
+			 res.cookie('lanId',encyLanId,{httpOnly: true });
+			 res.statusCode = 302;
+			 res.setHeader("Location", '/home');
+			 res.end();
         }
     };
 };
@@ -229,5 +228,18 @@ exports.matchstats = function(db,request) {
 exports.userstats = function(db,request) {
     return function(req, res) {
         res.render('userstats');
+    };
+};
+
+exports.rules = function(db,request) {
+    return function(req, res) {
+        res.render('rules');
+    };
+};
+
+exports.signout = function(db,request) {
+    return function(req, res) {
+		res.cookie('lanId','akdhhjhdjh',{maxAge : 0,httpOnly: true });
+        res.render('index');
     };
 };
