@@ -1,12 +1,29 @@
 exports.admin = function(db) {
     return function(req, res) {
-        var collection = db.get('match');
-        collection.find({},{},function(e,docs){
-            res.render('admin', {
-                "match" : docs
-            });
-        });
-    };
+		var collection = db.get('match');
+		var teamsdata = db.get('teams');
+		collection.find({},{},function(e,docs){
+			for (var i=0; i<docs.length; i++) {
+				var doc=docs[i];
+				doc.teams=[];
+				var teamInfo =[];
+				teamsdata.find({"_id":doc.team_1_id},{},function(e,teamdoc){
+					doc.teams.push(teamdoc);
+					teamsdata.find({"_id":doc.team_2_id},{},function(e,teamdoc){
+						console.log("team 2");
+						console.log("Pushing team2");
+						doc.teams.push(teamdoc);
+						console.log("Print Docs");
+						console.log(docs);
+						console.log("Rendering");
+						res.render('admin', {
+							"match" : docs,
+						});
+					});
+				});
+			}
+		});
+	};
 };
 
 exports.adminData = function(db) {
@@ -55,12 +72,12 @@ exports.adminSubmit = function(db) {
 			console.log(doclength);
 			if(doclength == 1){
 				console.log("Doc Length less than 1");
-				matchUpdate.update({ _id: matchid},{$push :{"match_winner":teamid,"man_of_the_match":playerid}}, function(err, records){
+				matchUpdate.update({ _id: matchid},{$set :{"match_winner":teamid,"man_of_the_match":playerid}}, function(err, records){
 					res.render('adminSubmit', {"match" : docs,});
 				});
 			}else{
 				console.log("Doc Length more than 1");
-				matchUpdate.update({ _id: matchid},{$push :{"match_winner":teamid,"man_of_the_match":playerid}}, function(err, records){
+				matchUpdate.update({ _id: matchid},{$set :{"match_winner":teamid,"man_of_the_match":playerid}}, function(err, records){
 					res.render('adminSubmit', { err: 'Match Info is not valid' });
 				});
 			}
