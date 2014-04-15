@@ -5,6 +5,9 @@ $(document).ready(function () {
 		
 		location.href = "signup";
 	});
+	
+	 $(".login-form").validationEngine();
+	  $("#signin_form").validationEngine();
 	$(".playerListDropDown a.selection").click(function(){
 		if($(this).parent("div").find("ul").is(':visible')){
 			$(this).parent("div").find("ul").fadeOut(1000);

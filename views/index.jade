@@ -12,14 +12,17 @@ head
     link(href='/stylesheets/global.css', rel='stylesheet', type='text/css')
     link(href='/stylesheets/main.css', rel='stylesheet', type='text/css')
     link(href='/stylesheets/style.css', rel='stylesheet', type='text/css')
+    link(href='/stylesheets/validationEngine.jquery.css', rel='stylesheet', type='text/css')
     script(type='text/javascript', src='/javascripts/jquery-1.7.2.min.js')
     script(type='text/javascript', src='/javascripts/home.js')
+    script(type='text/javascript', src='/javascripts/jquery.validationEngine.js')
+    script(type='text/javascript', src='/javascripts/jquery.validationEngine-en.js')
   body
     #content_container_main
       #header
         .primaryMenu1
         #logo
-          img(src="images/cartwheellogoSmall.png" class="cartwheellogo")
+          img(src="images/cartwheellogoSmall_white.png" class="cartwheellogo")
           img(src="images/header2.png")
         .text
           label Powered by
@@ -38,9 +41,9 @@ head
           h1 Login Form
           span Login  Predict  Win !!
         .content
-          input.input.username(name='name', type='text', placeholder='Lan ID')
+          input.input.username(name='name',data-validation-engine='validate[required]' ,type='text', placeholder='Lan ID')
           .user-icon
-          input.input.password(name='pass', type='password', placeholder='Password')
+          input.input.password(name='pass',data-validation-engine='validate[required]', type='password', placeholder='Password')
           .pass-icon
         .err_msg
           p #{err}
