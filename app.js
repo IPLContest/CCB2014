@@ -121,14 +121,12 @@ app.post('/adminSubmit', admin.adminSubmit(db));
 app.get('/signout', routes.signout());
 app.get('/fetchMatches', routes.fetchMatches(db,request));
 app.get('/fetchMatchDetails', routes.fetchMatchDetails(db,request));
+app.get('/feedback', routes.feedback(db,request));
+app.post('/feedbacksubmit', routes.feedbacksubmit(db));
 
 app.get('*', function(req, res){
   res.render('404', 404);
 });
-
-
-
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -1,28 +1,32 @@
 exports.admin = function(db) {
     return function(req, res) {
-		var collection = db.get('match');
-		var teamsdata = db.get('teams');
-		collection.find({},{},function(e,docs){
-			for (var i=0; i<docs.length; i++) {
-				var doc=docs[i];
-				doc.teams=[];
-				var teamInfo =[];
-				teamsdata.find({"_id":doc.team_1_id},{},function(e,teamdoc){
-					doc.teams.push(teamdoc);
-					teamsdata.find({"_id":doc.team_2_id},{},function(e,teamdoc){
-						console.log("team 2");
-						console.log("Pushing team2");
+		if(res.locals.record != null && res.locals.record.adminFlag == "Y"){
+			var collection = db.get('match');
+			var teamsdata = db.get('teams');
+			collection.find({},{},function(e,docs){
+				for (var i=0; i<docs.length; i++) {
+					var doc=docs[i];
+					doc.teams=[];
+					var teamInfo =[];
+					teamsdata.find({"_id":doc.team_1_id},{},function(e,teamdoc){
 						doc.teams.push(teamdoc);
-						console.log("Print Docs");
-						console.log(docs);
-						console.log("Rendering");
-						res.render('admin', {
-							"match" : docs,
+						teamsdata.find({"_id":doc.team_2_id},{},function(e,teamdoc){
+							console.log("team 2");
+							console.log("Pushing team2");
+							doc.teams.push(teamdoc);
+							console.log("Print Docs");
+							console.log(docs);
+							console.log("Rendering");
+							res.render('admin', {
+								"match" : docs,
+							});
 						});
 					});
-				});
-			}
-		});
+				}
+			});
+		}else{
+			 res.render('access_denied', {title:'Acess Denied'});
+		}
 	};
 };
 
@@ -98,13 +102,13 @@ exports.adminSubmit = function(db) {
 					  for(j=0; j< contestLength; j++) {
 							if(matchid==docs[i].contest[j].match_id && docs[i].contest[j].match_winner_entry==teamid && docs[i].contest[j].mom_entry==playerid){
 								console.log('Both team and mom matched for the user - '+docs[i].first_name);								
-								usercollection.update({ 'contest.match_id': matchid,'_id' :docs[i]._id},{$set :{ "contest.$.match_points": 10,"contest.$.mom_points":10,"contest.$.bonus_points":10}}, function(err, records){
+								usercollection.update({ 'contest.match_id': matchid,'_id' :docs[i]._id},{$set :{ "contest.$.match_points": 5,"contest.$.mom_points":10,"contest.$.bonus_points":5}}, function(err, records){
 									console.log("No of records updated:" + records);
 								//	res.render('index', { err: 'Match Info is not valid' });
 								});
 							} else if(matchid==docs[i].contest[j].match_id && docs[i].contest[j].match_winner_entry==teamid && docs[i].contest[j].mom_entry!=playerid){
 								console.log('Only team matched for the user - '+docs[i].first_name);
-								usercollection.update({ 'contest.match_id': matchid,'_id' :docs[i]._id},{$set :{ "contest.$.match_points": 10,"contest.$.mom_points":0,"contest.$.bonus_points":0}}, function(err, records){
+								usercollection.update({ 'contest.match_id': matchid,'_id' :docs[i]._id},{$set :{ "contest.$.match_points": 5,"contest.$.mom_points":0,"contest.$.bonus_points":0}}, function(err, records){
 								//	res.render('index', { err: 'Match Info is not valid' });
 								});
 							}else if(matchid==docs[i].contest[j].match_id && docs[i].contest[j].match_winner_entry!=teamid && docs[i].contest[j].mom_entry==playerid){

@@ -13,7 +13,6 @@
 	"mongoskin": "*",
     "request" : "*",
     "nodemailer": "*",
-    "date-format-lite":"*",
-    "moment":"*"
+    "date-format-lite":"*"
   }
 }

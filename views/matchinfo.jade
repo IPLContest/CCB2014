@@ -20,7 +20,7 @@ each matchinfo, i in match
                 label #{matchinfo.teams[1].team_title}
                 .tLogo50x(class="#{matchinfo.teams[1].team_css_name}")
             .matchtime
-              p.matchDate 2:30pm GMT (8:00pm IST), Wednesday 16th April 2014 
+              p.matchDate #{matchinfo.teams[1].team_date_time}
           .matchFooter
             .bottom
             .momlabel
@@ -39,7 +39,7 @@ each matchinfo, i in match
             .error_msg
               label#err_msg_label			
             .mombutton
-              button#Predict-btn.Predict-btn(type='submit') Predict Winners
+              button#Predict-btn.Predict-btn(type='submit') Submit Data
           .matchSectionMain
             .teamlogo1
               .tLogo100x(class="#{matchinfo.teams[0].team_css_name}")

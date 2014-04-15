@@ -102,7 +102,7 @@ a{
 }
 .login-form .err_msg {
     color: #FF0000;
-    margin-left: 66px;
+    margin-left: 32px;
 }
 .text > label {
     float: left;
@@ -279,4 +279,18 @@ a{
 }
 .signUpBtn > a {
     color: #FFFFFF;
+}
+
+.feedback {
+    border-radius: 4px 4px 4px 4px;
+    padding: 7px 12px 7px 27px;
+    top: 50px;
+    width: 600px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #666666;
+    display: block;
+    margin-left: 20%;
+    opacity: 0.75;
+    margin-top: 8%;
+    float : left;
 }

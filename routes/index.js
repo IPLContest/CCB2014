@@ -214,7 +214,7 @@ exports.register = function(db,request) {
                                 smtpTransport.sendMail({
                                    from: "ipl2014@target.com", // sender address
                                    to: records.emailId, // comma separated list of receivers
-                                   subject: "Verify Email Address", // Subject line
+                                   subject: "Verify Email Address : Target Premier League", // Subject line
                                    text: verfiyUrl +"?lanId=" +encrypted // plaintext body
                                 }, function(error, response){
                                    if(error){
@@ -323,5 +323,29 @@ exports.signout = function(db,request) {
     return function(req, res) {
 		res.cookie('lanId','akdhhjhdjh',{maxAge : 0,httpOnly: true });
         res.render('index');
+    };
+};
+
+exports.feedback = function(db,request) {
+    return function(req, res) {
+           res.render('feedback');
+    };
+};
+
+exports.feedbacksubmit = function(db) {
+    return function(req, res) {
+        var userId = req.lanId;
+        var comments = req.param("comments");
+        var collection = db.get('feedback');
+
+         var document = {"userId":userId, "comments" : comments};
+
+         collection.insert(document, {safe: true}, function(err, records){
+                console.log("Feedback submitte "+records);
+
+                res.render('feedback');
+
+            });
+           
     };
 };
