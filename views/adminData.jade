@@ -6,9 +6,9 @@ block content
 	ul
 		each matchinfo, i in match
 				form(action='adminSubmit', method='POST')
-					input(type='hidden', value='#{matchinfo._id}', name='match_id')
+					input(type='hidden', value='#{matchinfo.match_id}', name='match_id')
 					li
-						|	Match_Id	:	#{matchinfo._id}
+						|	Match_Id	:	#{matchinfo.match_id}
 					br
 					li
 						|	Teams	:

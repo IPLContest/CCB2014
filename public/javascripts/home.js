@@ -6,9 +6,8 @@ $(document).ready(function () {
 		location.href = "signup";
 	});
 	
-	 $(".login-form").validationEngine();
-	  $("#signin_form").validationEngine();
-	$(".playerListDropDown a.selection").click(function(){
+	
+	$("body").delegate(".playerListDropDown a.selection" ,"click",function(){
 		if($(this).parent("div").find("ul").is(':visible')){
 			$(this).parent("div").find("ul").fadeOut(1000);
 		}else{
@@ -26,7 +25,7 @@ $(document).ready(function () {
 		
 	});
 	
-	$(".playerListDropDown ul li").click(function(){
+	$("body").delegate(".playerListDropDown ul li","click",function(){
 		$(this).closest("form").find("#player").val($(this).find("a").attr('data-team-id'));
 		$(this).closest("div").find("a.selection label").html($(this).find("a").html());
 		$(this).closest("div").find("ul").hide();

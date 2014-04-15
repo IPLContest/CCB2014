@@ -5,5 +5,5 @@ block content
 		form(action='adminData', method='POST')
 			select(name="match_id")
 				each matchinfo, i in match
-					option(value='#{matchinfo._id}') Match_Id : #{matchinfo._id} held on date : #{matchinfo.date}
+					option(value='#{matchinfo.match_id}')  Match :#{matchinfo.match_id} held on date : #{matchinfo.date}
 			input(type="submit", value="Submit")

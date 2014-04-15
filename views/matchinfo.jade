@@ -1,0 +1,49 @@
+each matchinfo, i in match
+    form(action='javascript:void(0)', method='POST')
+      input(type='hidden', value='#{matchinfo.match_id}',id='matchid', name='matchid')
+      input(type='hidden', value='0', id='player', name='player') 
+      .mainContainer
+        .matchSection
+          .matchHeader
+            .top
+              | Match #{matchinfo.match_id}
+            .teamSelectionlabel
+              label Please predict Winner
+            .eventCompetitors
+              .teamlogo
+                input(type='radio', radio='radio', value='#{matchinfo.teams[0]._id}', name='team') 
+                label #{matchinfo.teams[0].team_title}
+                .tLogo50x(class="#{matchinfo.teams[0].team_css_name}")
+              h5 VS
+              .teamlogo
+                input(type='radio', radio='radio', value='#{matchinfo.teams[1]._id}', name='team')
+                label #{matchinfo.teams[1].team_title}
+                .tLogo50x(class="#{matchinfo.teams[1].team_css_name}")
+            .matchtime
+              p.matchDate 2:30pm GMT (8:00pm IST), Wednesday 16th April 2014 
+          .matchFooter
+            .bottom
+            .momlabel
+              label Please select Man of the Match
+            .momsection
+              .playerListDropDown
+                a.selection(href='javascript:void(0)')
+                  label Select a player
+                  span
+                ul
+                  each team1, j in matchinfo.teams
+                        each player, k in team1.players
+                           li
+                             a(data-team-id='#{player.player_id}', href='javascript:void(0)') #{player.name}
+          .matchFooterPredict
+            .error_msg
+              label#err_msg_label			
+            .mombutton
+              button#Predict-btn.Predict-btn(type='submit') Predict Winners
+          .matchSectionMain
+            .teamlogo1
+              .tLogo100x(class="#{matchinfo.teams[0].team_css_name}")
+              img(src='images/#{matchinfo.teams[0].team_image}')
+            .teamlogo2
+              .tLogo100x(class="#{matchinfo.teams[1].team_css_name}")
+              img(src='images/#{matchinfo.teams[1].team_image}')

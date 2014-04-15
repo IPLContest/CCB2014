@@ -250,7 +250,7 @@ exports.addUserMatchInfo = function(db) {
 
      usercollection.update({ _id: req.lanId},{$push :{contest:{"match_id":matchid,"match_winner_entry":teamid,"mom_entry":playerid,"match_points" :0,
 "mom_points" : 0,"bonus_points" : 0}}}, function(err, records){
-           res.render( {
+           res.json( {
                             "status" : "submitted",                            
                              "statusmessage" : "Your entry has been submitted successfully."
                         });

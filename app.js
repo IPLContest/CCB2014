@@ -119,6 +119,8 @@ app.get('/admin', admin.admin(db));
 app.post('/adminData', admin.adminData(db));
 app.post('/adminSubmit', admin.adminSubmit(db));
 app.get('/signout', routes.signout());
+app.get('/fetchMatches', routes.fetchMatches(db,request));
+app.get('/fetchMatchDetails', routes.fetchMatchDetails(db,request));
 
 app.get('*', function(req, res){
   res.render('404', 404);

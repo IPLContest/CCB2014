@@ -44,16 +44,22 @@ exports.home = function(db) {
          console.log("****Intercepted LAN ID*********:" + req.lanId);
 
         if(req.lanId != null){
-            var collection = db.get('users');
-          
-       
+			res.render('home', {
+				"status" : "success"
+			});
+        }else{
+            res.render('index', { title: 'Hello, World!' });
+        }
+    };
+};
 
-                     console.log("Found user");
-
+exports.fetchMatches =function(db,request) {
+    return function(req, res) {
+	
+		
                     var collection = db.get('match');
                     var teamsdata = db.get('teams');
-                    var date=req.param('date');
-
+                   
                     require('date-format-lite');
                     var now = new Date() ;
                     Date.masks.default = 'MM/DD/YY';
@@ -64,27 +70,108 @@ exports.home = function(db) {
                     collection.find({"date":date},{},function(e,docs){
       
                     if(docs.length > 0) {
+                    
+                        res.json({
+                            "status" : "success",   
+                            "match" : docs
+                        });
+
+                    
+				
+
+        }else {
+             res.json({
+                            "status" : "nomatch",   
+                            "statusmessage" : "There are no matches today. Check back with us tomorrow."
+            });
+        }
+		});
+	
+	};
+};
+
+
+function calcTime(offset) {
+
+    // create Date object for current location
+    d = new Date();
+    
+    // convert to msec
+    // add local time zone offset 
+    // get UTC time in msec
+    utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    
+    // create new Date object for different city
+    // using supplied offset
+    nd = new Date(utc + (3600000*offset));
+   
+    return nd;
+
+}
+
+
+exports.fetchMatchDetails =function(db,request) {
+    return function(req, res) {
+		           var collection = db.get('match');
+                    var teamsdata = db.get('teams');
+                    var match_id=req.param('match_id');
+                    var moment = require('moment');
+					 console.log(match_id);   
+
+                    require('date-format-lite');
+                    var now = new Date() ;
+                    // console.log(now);
+                    
+                    Date.masks.default = 'YYYY-MM-DD hh:mm:ss';
+                    date=now.format();
+                    //console.log(date.toString());
+
+
+
+                    var dd= calcTime('+5');
+                    console.log(dd);
+                    console.log("======");
+                    console.log(dd.format());
+
+
+                    collection.find({"match_id":match_id},{},function(e,docs){
+      
+                    if(docs.length > 0) {
 
                      console.log(docs.length + " matches found");      
 
                       for (var i=0; i<docs.length; i++) {
-                        doc = docs[i];
+                        var doc = docs[i];
                         doc.teams=[];
                         var teamInfo =[];
+                    console.log("doc.dateTime");
+                        console.log(doc.dateTime);
+                        console.log(dd);
+                      var startDate = moment(dd, 'YYYY-M-DD HH:mm:ss')
+                      var endDate = moment(doc.dateTime, 'YYYY-M-DD HH:mm:ss')
+                      var secondsDiff = endDate.diff(startDate, 'seconds')
+                      console.log("Seconds Diff");
+                      console.log(secondsDiff);
+                      if(secondsDiff > 0){
+                          doc.disable="N";
+                        }else{
+                        doc.disable="Y";
+                        }
 
                         teamsdata.find({"_id":{$in :[doc.team_1_id,doc.team_2_id]}},{},function(e,teamdoc){
-       
                         doc.teams.push(teamdoc[0]);
                         doc.teams.push(teamdoc[1]);
-                        console.log("Print Docs");
+                       
                         console.log(docs);
-                        res.render('home', {
+                        res.render('matchinfo', {
                             "status" : "success",   
                             "match" : docs
                         });
 
                     });
 				}
+				
+				
 
         }else {
              res.render('home', {
@@ -92,15 +179,10 @@ exports.home = function(db) {
                             "statusmessage" : "There are no matches today. Check back with us tomorrow."
             });
         }
-
-    });
-
-        }else{
-            res.render('index', { title: 'Hello, World!' });
-        }
-    };
+		
+		});
+	};
 };
-
 exports.register = function(db,request) {
     return function(req, res) {
         var lanId = req.param('name');

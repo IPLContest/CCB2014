@@ -16,8 +16,30 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#Predict-btn").click(function(e){
+	$.ajax({
+		url : 'fetchMatches',
+		dataType: 'json',
+		headers: { 
+			Accept : "application/json"
+		},
+		success: function (response) {
+			$.each(response.match,function(){
+					$.ajax({
+						url : 'fetchMatchDetails',
+						data : {"match_id" : $(this)[0].match_id},
+						success: function (response) {
+						$("#matchData").append(response);
+						}
+					});
+				
+			});
+		}
+	});
+	
+	
+	$("body").delegate("#Predict-btn","click",function(e){
 		e.preventDefault();
+		var self = $(this);
 		if($(this).closest('form').find("#player").val() == 0 && typeof $(this).closest('form').find("input[name=team]:checked").val() === "undefined"){
 			$("#err_msg_label").html("Atleast Winner Or Man Of The Match should be selected !!!");
 			return;
@@ -35,7 +57,7 @@ $(document).ready(function(){
 			"team" : $(this).closest('form').find("input[name=team]:checked").val()
 		},
 		success: function (response) {
-			$(".error_msg").html("<label id='succ_msg_label'>"+response.statusmessage+"</label>");
+			self.closest('form').find(".error_msg").html("<label id='succ_msg_label'>"+response.statusmessage+"</label>");
 		}
 		});
 		

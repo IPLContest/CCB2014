@@ -31,7 +31,7 @@ exports.adminData = function(db) {
 		var collection = db.get('match');
 		var teamsdata = db.get('teams');
 		var match_id=req.param('match_id');
-		collection.find({"_id":match_id},{},function(e,docs){
+		collection.find({"match_id":match_id},{},function(e,docs){
 			for (var i=0; i<docs.length; i++) {
 				var doc=docs[i];
 				doc.teams=[];
@@ -66,23 +66,22 @@ exports.adminSubmit = function(db) {
 		var playerid=req.param('player');
 		var matchUpdate = db.get('match');
 		var usercollection = db.get('users');
-		matchUpdate.find({"_id": matchid},{},function(e,docs){
+		matchUpdate.find({"match_id": matchid},{},function(e,docs){
 			var doclength=docs.length;
 			console.log("Doc Length");
 			console.log(doclength);
 			if(doclength == 1){
 				console.log("Doc Length less than 1");
-				matchUpdate.update({ _id: matchid},{$set :{"match_winner":teamid,"man_of_the_match":playerid}}, function(err, records){
+				matchUpdate.update({ "match_id": matchid},{$set :{"match_winner":teamid,"man_of_the_match":playerid}}, function(err, records){
 					res.render('adminSubmit', {"match" : docs,});
 				});
 			}else{
 				console.log("Doc Length more than 1");
-				matchUpdate.update({ _id: matchid},{$set :{"match_winner":teamid,"man_of_the_match":playerid}}, function(err, records){
+				matchUpdate.update({ "match_id": matchid},{$set :{"match_winner":teamid,"man_of_the_match":playerid}}, function(err, records){
 					res.render('adminSubmit', { err: 'Match Info is not valid' });
 				});
 			}
         });
-		
 		usercollection.find({"contest": {$elemMatch:{"match_id":matchid}}},{},function(e,docs){
 			var doclength=docs.length;
 			if(doclength < 1){
@@ -99,18 +98,19 @@ exports.adminSubmit = function(db) {
 					  for(j=0; j< contestLength; j++) {
 							if(matchid==docs[i].contest[j].match_id && docs[i].contest[j].match_winner_entry==teamid && docs[i].contest[j].mom_entry==playerid){
 								console.log('Both team and mom matched for the user - '+docs[i].first_name);								
-								usercollection.update({ 'contest.match_id': matchid},{$set :{ "contest.$.match_points": 10,"contest.$.mom_points":10,"contest.$.bonus_points":10}}, function(err, records){
-									res.render('index', { err: 'Match Info is not valid' });
+								usercollection.update({ 'contest.match_id': matchid,'_id' :docs[i]._id},{$set :{ "contest.$.match_points": 10,"contest.$.mom_points":10,"contest.$.bonus_points":10}}, function(err, records){
+									console.log("No of records updated:" + records);
+								//	res.render('index', { err: 'Match Info is not valid' });
 								});
 							} else if(matchid==docs[i].contest[j].match_id && docs[i].contest[j].match_winner_entry==teamid && docs[i].contest[j].mom_entry!=playerid){
 								console.log('Only team matched for the user - '+docs[i].first_name);
-								usercollection.update({ 'contest.match_id': matchid},{$set :{ "contest.$.match_points": 10,"contest.$.mom_points":0,"contest.$.bonus_points":0}}, function(err, records){
-									res.render('index', { err: 'Match Info is not valid' });
+								usercollection.update({ 'contest.match_id': matchid,'_id' :docs[i]._id},{$set :{ "contest.$.match_points": 10,"contest.$.mom_points":0,"contest.$.bonus_points":0}}, function(err, records){
+								//	res.render('index', { err: 'Match Info is not valid' });
 								});
 							}else if(matchid==docs[i].contest[j].match_id && docs[i].contest[j].match_winner_entry!=teamid && docs[i].contest[j].mom_entry==playerid){
 								console.log('Only mom matched for the user - '+docs[i].first_name);
-								usercollection.update({ 'contest.match_id': matchid},{$set :{ "contest.$.match_points": 0,"contest.$.mom_points":10,"contest.$.bonus_points":0}}, function(err, records){
-									res.render('index', { err: 'Match Info is not valid' });
+								usercollection.update({ 'contest.match_id': matchid,'_id' :docs[i]._id},{$set :{ "contest.$.match_points": 0,"contest.$.mom_points":10,"contest.$.bonus_points":0}}, function(err, records){
+								//res.render('index', { err: 'Match Info is not valid' });
 								});
 							}
 					  }
