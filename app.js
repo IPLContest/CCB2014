@@ -69,12 +69,15 @@ if(cookies['lanId'] != null){
   
    var collection = db.get('users');          
    collection.find({"_id" : req.lanId},function(errData,rec){
-		res.locals.record = rec[0];
-		 if(!(rec !=null && rec.length > 0)){
-			 res.render('index', { title: 'Hello, World!' });
-		 }
-		
-		next(); 
+		if(!errData){
+			res.locals.record = rec[0];
+			 if(!(rec !=null && rec.length > 0)){
+				 res.render('index', { title: 'Hello, World!' });
+			 }
+			 next(); 
+		}else{
+			 res.render('500', {title:'500: Internal Server Error', error: errData});
+		}
 	});
   
 } else {
