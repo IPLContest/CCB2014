@@ -16,9 +16,11 @@ head
     script(type='text/javascript', src='/javascripts/main.js')
   body
     #content_container_main
-       #header
+      #header
         .primaryMenu1
-        #logo TARGET PREMIER LEAGUE
+        #logo
+          img(src="images/cartwheellogoSmall_white.png" class="cartwheellogo")
+          img(src="images/header2.png")
         .text
           label Powered by
           img(src='images/cartwheel-logo.png', width='175px')
@@ -91,40 +93,10 @@ if status == "success"
           | TOP RANKERS
         .sectionbody
           ul
-    #footer
-      .footerdata
-        .footersection
-          img(src='images/24ipl.jpg')
-        .footersection
-          ul
-            li.Bold Quick Links
-            li Home
-            li Participants Statistics
-            li Match Statistics
-        .footersection
-          ul
-            li.Bold Teams
-            li Mumbai Indians
-            li Chennai Super Kings
-            li Delhi Daredevils
-            li Kings X1 Punjab
-            li Kolkata Knight Riders
-            li Rajasthan Royals
-            li Delhi Daredevils
-            li Delhi Daredevils
-        .footersection
-          ul
-            li.Bold Quick Links
-            li Home
-            li Participants Statistics
-            li Match Statistics
-      .clearline
-      .footerbottom
-        label Target Premier League | 
-        label Powered by Cartwheel 
 else
    br
    br
    img(class='comingsoon',src='images/cs.jpg')
    .bodyTextBig
      p Predict,Win & Have Fun!
+     

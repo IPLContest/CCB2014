@@ -79,18 +79,28 @@ a{
     height: 66px;
     width: 52px;
 }
+
+
+.cartwheellogo {
+    height: 43px;
+    margin-right: 12px;
+}
 #logo {
-   color: #FF0000;
+     color: #FF0000;
     float: left;
     font-family: 'MyWebFont';
     font-size: 29px;
     font-weight: bold;
-    margin-left: 67%;
-    margin-top: -23px;
-    text-shadow: 2px 2px #000000;
+    margin-left: 43%;
+    margin-top: 2px;
 }
 
+
 #signin_form .err_msg {
+    color: #FF0000;
+    margin-left: 66px;
+}
+.login-form .err_msg {
     color: #FF0000;
     margin-left: 66px;
 }
@@ -106,8 +116,7 @@ a{
     box-shadow: 2px 2px 2px #000000;
     color: #FFFFFF;
     display: inline-block;
-    float: right;
-    margin-right: 52px;
+    margin-left: 10px;
     margin-top: 10px;
 }
 .cartwheel {
@@ -173,7 +182,6 @@ a{
 	display: block;
     margin-left: 11%;
     margin-top: 8%;
-	opacity: 0.7;
 	float : left;
 }
 .signUpBox {

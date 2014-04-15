@@ -341,7 +341,29 @@
 	text-align :left;
 	padding: 3px 0 3px 26px;
 }
-.userstatsSection ,.rulestatsSection{
+
+.rulestatsSection{
+	 background-color: #FFFFFF;
+    box-shadow: 3px 3px 1px #000000;
+    line-height: 29px;
+    margin-bottom: 20px;
+    margin-left: 15%;
+    margin-top: 55px;
+    max-height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: center;
+    width: 58%;
+}
+.rulestatsSection .section1 {
+    float: left;
+    width: 76%;
+}
+.rulestatsSection > img {
+    float: left;
+	width :24%;
+}
+.userstatsSection {
      background-color: #FFFFFF;
     box-shadow: 3px 3px 1px #000000;
     line-height: 29px;
@@ -391,7 +413,7 @@
 .userInfo {
     color: #FFFFFF;
     float: right;
-    margin-right: 51px;
+    margin-right: 112px;
 }
 
 .footersection {
@@ -481,6 +503,16 @@ tr td:hover { background: #666; color: #FFF; } /* Hover cell effect! */
      text-align:center;
 }
 
+.bodyTextSmall {
+     font-family:georgia, serif;
+     color:#FFFFFF;
+     font-size:25px;
+     font-weight:normal;
+     line-height:125%;
+     margin-left : 40px;
+     text-align:center;
+}
+
 
 .error_msg > label#err_msg_label{
     color: #FF0000;
@@ -508,7 +540,7 @@ tr td:hover { background: #666; color: #FFF; } /* Hover cell effect! */
 .comingsoon{
 	border: 1px solid #FFFFFF;
     border-radius: 10px;
-    margin-left: 32%;
+    margin-left: 34%;
     opacity: 0.75;
 	 margin-top: 4%;
 }

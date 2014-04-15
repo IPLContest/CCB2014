@@ -6,7 +6,7 @@ var crypto = require('crypto');
 var algorithm = 'aes256'; // or any other algorithm supported by OpenSSL
 var key = 'password';
 var nodemailer = require("nodemailer");
-var verfiyUrl = 'http://localhost:3000/verifyUser';
+var verfiyUrl = 'http://xsslx0014.target.com:3000/verifyUser';
 
 exports.index = function(db) {
     return function(req, res) {
@@ -104,7 +104,7 @@ exports.home = function(db) {
 exports.register = function(db,request) {
     return function(req, res) {
         var lanId = req.param('name');
-        request.get("http://http://xsslx0004.target.com:11026/omt/secure/public/checkLanIdExist.do?lanId="+lanId, function (err, res1, body) {
+        request.get("http://xsslx0004.target.com:11026/omt/secure/public/checkLanIdExist.do?lanId="+lanId, function (err, res1, body) {
             if (!err) {
                 var resultsObj = JSON.parse(body);
                 if(resultsObj.responseType.responseCode == 0){
@@ -130,7 +130,7 @@ exports.register = function(db,request) {
                                    service: "localhost"
                                 });
                                 smtpTransport.sendMail({
-                                   from: "mayur.vaid@target.com", // sender address
+                                   from: "ipl2014@target.com", // sender address
                                    to: records.emailId, // comma separated list of receivers
                                    subject: "Verify Email Address", // Subject line
                                    text: verfiyUrl +"?lanId=" +encrypted // plaintext body

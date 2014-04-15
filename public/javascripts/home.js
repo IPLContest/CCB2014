@@ -1,5 +1,10 @@
 
 $(document).ready(function () {
+	$(".register").click(function(e){
+		e.preventDefault();
+		
+		location.href = "signup";
+	});
 	$(".playerListDropDown a.selection").click(function(){
 		if($(this).parent("div").find("ul").is(':visible')){
 			$(this).parent("div").find("ul").fadeOut(1000);

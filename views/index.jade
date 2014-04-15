@@ -11,13 +11,16 @@ head
     link(href='Page URL - TBD by backend', rel='canonical')
     link(href='/stylesheets/global.css', rel='stylesheet', type='text/css')
     link(href='/stylesheets/main.css', rel='stylesheet', type='text/css')
+    link(href='/stylesheets/style.css', rel='stylesheet', type='text/css')
     script(type='text/javascript', src='/javascripts/jquery-1.7.2.min.js')
     script(type='text/javascript', src='/javascripts/home.js')
   body
     #content_container_main
       #header
         .primaryMenu1
-        #logo TARGET PREMIER LEAGUE
+        #logo
+          img(src="images/cartwheellogoSmall.png" class="cartwheellogo")
+          img(src="images/header2.png")
         .text
           label Powered by
           img(src='images/cartwheel-logo.png', width='175px')
@@ -29,24 +32,18 @@ head
               a(href='userpoints') Participants Statistics
             li
               a(href='rules') Rules
-          .signUpBtn
-            a(href="signup") Sign Up
-      #signIn.signInBox
-        .fadeInBox
-          .signBoxHeadWrapper
-            span
-              span.newUserLink New User?
-              a#signUp.ml10.c666.txt-deco-under(href='signup') Sign Up
-            h2#loginHeader Log In
-          form#signin_form(method='post', action='login')
-            .inputArea
-              label(for='name') Lan ID
-              input#name.textbox(type='text', placeholder='Z000000', name='name')
-            .inputArea
-              label(for='pass') Password
-              input#password.textbox(type='password', placeholder='Enter Password', name='pass')
-            div.err_msg
-              p #{err}
-            div
-              button#signin-btn.sign-btn(type='submit') Log In
-        .clear
+      #wrapper
+       form.login-form(name='login-form', action='login', method='post')
+        .header
+          h1 Login Form
+          span Login  Predict  Win !!
+        .content
+          input.input.username(name='name', type='text', placeholder='Lan ID')
+          .user-icon
+          input.input.password(name='pass', type='password', placeholder='Password')
+          .pass-icon
+        .err_msg
+          p #{err}
+        .footer
+          input.button(type='submit', name='submit', value='Login')
+          input.register( type='submit', name='submit', value='Register')

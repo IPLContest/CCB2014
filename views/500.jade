@@ -17,19 +17,20 @@ head
     #content_container_main
       #header
         .primaryMenu1
-        #logo TARGET PREMIER LEAGUE
+        #logo
+          img(src="images/cartwheellogoSmall_white.png" class="cartwheellogo")
+          img(src="images/header2.png")
         .text
           label Powered by
           img(src='images/cartwheel-logo.png', width='175px')
         .primaryMenu
           ul
-            if record != null
-              li
-                a(href='home') Home
             li
-              a(href='userstats') Participants Statistics
+              a(href='home') Home
             li
-              a(href='matchstats') Match Statistics
+              a(href='userpoints') Participants Statistics
+            li
+              a(href='rules') Rules
           .userInfo
             if record != null
               label #{record.firstName} &nbsp;
