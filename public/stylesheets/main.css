@@ -376,7 +376,29 @@
     width: 71%;
 }
 
-.userstatsSection  .sectionheader,.rulestatsSection  .sectionheader {
+#userprofile  {
+     background-color: #FFFFFF;
+    box-shadow: 3px 3px 1px #000000;
+    line-height: 29px;
+    margin-bottom: 20px;
+    margin-left: 1%;
+    margin-top: 20px;
+    max-height: 600px;
+    overflow-y: auto;
+    text-align: center;
+    width: 96%;
+}
+
+#userprofile > img {
+    float: left;
+    width: 22%;
+}
+#userprofile  .section1 {
+    float: left;
+    width: 78%;
+}
+
+.userstatsSection  .sectionheader,.rulestatsSection  .sectionheader ,#userprofile .sectionheader{
     background-color: #000000;
     color: #FFFFFF;
     font-weight: bold;
@@ -551,4 +573,58 @@ tr td:hover { background: #666; color: #FFF; } /* Hover cell effect! */
     margin-left: 25%;
     opacity: 0.65;
      margin-top: 4%;
+}
+
+.feedback{
+	 background: none repeat scroll 0 0 #F3F3F3;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    margin: 2% auto 0;
+    padding: 16px;
+    width: 528px;
+}
+
+.feedback #commentsDiv{
+	color: #414848;
+    font-family: 'Bree Serif',serif;
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 34px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 0 #FFFFFF;
+}
+
+.feedbacksubmit{
+    background: none repeat scroll 0 0 #56C2E1;
+    border: 1px solid #46B3D3;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.75) inset;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: 'Bree Serif',serif;
+    font-size: 18px;
+    font-weight: 300;
+    padding: 11px 25px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+	margin-top: 8px;
+}
+
+.feedbacksubmit:hover{
+	background: #3f9db8;
+	border: 1px solid rgba(256,256,256,0.75);
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+.feedback textarea{
+	color : #000;
+	 font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+}
+.feedback textarea:hover{
+	background: #000;
+	color: #FFF;
 }

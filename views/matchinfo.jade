@@ -19,8 +19,8 @@ each matchinfo, i in match
                 input(type='radio', radio='radio', value='#{matchinfo.teams[1]._id}', name='team')
                 label #{matchinfo.teams[1].team_title}
                 .tLogo50x(class="#{matchinfo.teams[1].team_css_name}")
-            .matchtime
-              p.matchDate #{matchinfo.teams[1].team_date_time}
+              .matchtime
+                p.matchDate #{matchinfo.match_date_time}
           .matchFooter
             .bottom
             .momlabel
@@ -37,7 +37,8 @@ each matchinfo, i in match
                              a(data-team-id='#{player.player_id}', href='javascript:void(0)') #{player.name}
           .matchFooterPredict
             .error_msg
-              label#err_msg_label			
+              label#err_msg_label
+            if matchinfo.disable == 'N'			  
             .mombutton
               button#Predict-btn.Predict-btn(type='submit') Submit Data
           .matchSectionMain

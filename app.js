@@ -3,6 +3,9 @@
  * Module dependencies.
  */
 
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+
 var express = require('express');
 var crypto = require('crypto');
 var algorithm = 'aes256'; // or any other algorithm supported by OpenSSL
@@ -15,22 +18,40 @@ var admin = require('./routes/admin.js')
 var http = require('http');
 var path = require('path');
 var request = require("request");
+async = require("async");
 
 // Database
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/cpl2014');
+
+console.log("Mongo DB HOST:"+ process.env.OPENSHIFT_MONGODB_DB_HOST);
+console.log("Mongo DB PORT:"+process.env.OPENSHIFT_MONGODB_DB_PORT);
+
+
+//Following line is used for cloud. Comment it when running on local
+var connectionstrmonk = "admin:hRhTuGzZr_71@"+process.env.OPENSHIFT_MONGODB_DB_HOST+":"+process.env.OPENSHIFT_MONGODB_DB_PORT+"/iplcontest2014";
+//Uncomment the following line when you are running locally
+//var connectionstrmonk = "localhost:27017/cpl2014";
+var db = monk(connectionstrmonk);
+
+
+
 
 var mongoo = require('mongoskin');
-var dbv = mongoo.db("mongodb://localhost:27017/cpl2014", {native_parser:true});
+//Following line is used for cloud. Comment it when running on local
+var connectionstr = "mongodb://admin:hRhTuGzZr_71@"+process.env.OPENSHIFT_MONGODB_DB_HOST+":"+process.env.OPENSHIFT_MONGODB_DB_PORT+"/iplcontest2014";
+//Uncomment the following line when you are running locally
+//var connectionstr = "mongodb://localhost:27017/cpl2014";
+
+var dbv = mongoo.db(connectionstr, {native_parser:true});
 
 
 
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', server_port || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -43,14 +64,7 @@ app.use(express.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
- // Handle 500
-  app.use(function(error, req, res, next) {
-      res.status(500);
-     res.render('500', {title:'500: Internal Server Error', error: error});
-  });
-
-
-/*Intercept every request, get lanId from cookie and set it in the request */
+ /*Intercept every request, get lanId from cookie and set it in the request */
 app.use(function(req, res, next) {
    var cookies = {};
        req.headers.cookie && req.headers.cookie.split(';').forEach(function( cookie ) {
@@ -61,27 +75,27 @@ app.use(function(req, res, next) {
 
     );
 
-if(cookies['lanId'] != null){
+if(cookies['email'] != null){
   var decipher = crypto.createDecipher(algorithm, key);
-  var decrypted = decipher.update(cookies['lanId'], 'hex', 'utf8') + decipher.final('utf8');
-  req.lanId = decrypted;
+  var decrypted = decipher.update(cookies['email'], 'hex', 'utf8') + decipher.final('utf8');
+  req.email = decrypted;
   console.log("User Id: "+decrypted);
   
    var collection = db.get('users');          
-   collection.find({"_id" : req.lanId},function(errData,rec){
-		if(!errData){
-			res.locals.record = rec[0];
-			 if(!(rec !=null && rec.length > 0)){
-				 res.render('index', { title: 'Hello, World!' });
-			 }
-			 next(); 
-		}else{
-			 res.render('500', {title:'500: Internal Server Error', error: errData});
-		}
-	});
+   collection.find({"_id" : req.email},function(errData,rec){
+    if(!errData){
+      res.locals.record = rec[0];
+       if(!(rec !=null && rec.length > 0)){
+         res.render('index', { title: 'Hello, World!' });
+       }
+       next(); 
+    }else{
+       res.render('500', {title:'500: Internal Server Error', error: errData});
+    }
+  });
   
 } else {
-   req.lanId = null; 
+   req.email = null; 
     next(); 
 }
 
@@ -123,11 +137,21 @@ app.get('/fetchMatches', routes.fetchMatches(db,request));
 app.get('/fetchMatchDetails', routes.fetchMatchDetails(db,request));
 app.get('/feedback', routes.feedback(db,request));
 app.post('/feedbacksubmit', routes.feedbacksubmit(db));
+app.get('/myDashboard', user.myDashboardUserData(db));
 
 app.get('*', function(req, res){
   res.render('404', 404);
 });
 
-http.createServer(app).listen(app.get('port'), function(){
+
+// Uncomment the below given block when pushing code to cloud
+http.createServer(app).listen(app.get('port'), server_ip_address,function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
+//Uncomment when used locally
+/*http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
+});
+*/

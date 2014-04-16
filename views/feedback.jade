@@ -16,11 +16,8 @@ head
       #header
         .primaryMenu1
         #logo
-          img(src="images/cartwheellogoSmall_white.png" class="cartwheellogo")
-          img(src="images/header2.png")
-        .text
-          label Powered by
-          img(src='images/cartwheel-logo.png', width='175px')
+          img(src="images/EPL_logo.jpg" class="cartwheellogo")
+          #logoText Everest Premeier League
         .primaryMenu
           ul
             li
@@ -35,11 +32,9 @@ head
               | |
               a.signout(href='signout') &nbsp;Sign Out
       #matchData
-      br
-      br   
       .feedback         
           form(name="input", action="feedbacksubmit", method="post")
-            | Comments:
-            textarea(name='comments', rows=20, cols=60) Enter your comments here
+            #commentsDiv Comments
+            textarea(name='comments', rows=14, cols=60,placeholder="Enter your comments here") 
             br
-            input(type="submit", value="Submit")
+            input(type="submit", class="feedbacksubmit",value="Submit")

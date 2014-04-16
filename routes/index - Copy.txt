@@ -6,35 +6,25 @@ var crypto = require('crypto');
 var algorithm = 'aes256'; // or any other algorithm supported by OpenSSL
 var key = 'password';
 var nodemailer = require("nodemailer");
-var verfiyUrl = 'http://iplcontest2014-geeks2014.rhcloud.com/verifyUser';
+var verfiyUrl = 'http://xsslx0014.target.com:3000/verifyUser';
 
 exports.index = function(db) {
     return function(req, res) {
                 
-         if(req.email!= null){
+        if(req.lanId!= null){
             var collection = db.get('users');
            
-            collection.find({"_id" : req.email},function(errData,rec){
+            collection.find({"_id" : req.lanId},function(errData,rec){
                 if(rec !=null && rec.length > 0){
                   //  res.render('home', { "record": rec[0]});
                      res.statusCode = 302;
                      res.setHeader("Location", '/home');
                      res.end();
                 }else{
-				    res.render('index', {arr1: []});    
                 }
             });
         }else{
-		    var collection = db.get('users');
-		    collection.count({},function(errData,rec){
-				var arr1 = [];
-				while(rec != 0){
-					arr1.push(rec%10);
-					rec=parseInt(rec/10);
-				}
-				res.render('index', {arr1: arr1.reverse()});          
-
-			});
+            res.render('index', { title: 'Hello, World!' });
         }
     };
 };
@@ -51,29 +41,14 @@ exports.pointstable = function(req, res){
 exports.home = function(db) {
     return function(req, res) {
                  
-         console.log("****Intercepted LAN ID*********:" + req.email);
+         console.log("****Intercepted LAN ID*********:" + req.lanId);
 
-        if(req.email!= null){
-            var collection = db.get('users');
-           
-            collection.find({"_id" : req.email},function(errData,rec){
-                if(rec !=null && rec.length > 0){
-                  //  res.render('home', { "record": rec[0]});
-                    res.render('home');   
-                }else{
-                }
-            });
-        }else{
-		    var collection = db.get('users');
-		    collection.count({},function(errData,rec){
-				var arr1 = [];
-				while(rec != 0){
-					arr1.push(rec%10);
-					rec=parseInt(rec/10);
-				}
-				res.render('index', {arr1: arr1.reverse()});          
-
+        if(req.lanId != null){
+			res.render('home', {
+				"status" : "success"
 			});
+        }else{
+            res.render('index', { title: 'Hello, World!' });
         }
     };
 };
@@ -153,9 +128,9 @@ exports.fetchMatchDetails =function(db,request) {
 
 
 
-                    var dd= calcTime('+9.5');
+                    var dd= calcTime('+5');
                     console.log(dd);
-                    console.log("Calc time ======" + calcTime('+5.5'));
+                    console.log("======");
                     console.log(dd.format());
 
 
@@ -210,81 +185,89 @@ exports.fetchMatchDetails =function(db,request) {
 };
 exports.register = function(db,request) {
     return function(req, res) {
-        var emailId = req.param('email');
-		if(emailId != null){
-			var pass = req.param('pass');
-			var firstname = req.param('firstname');
-			var lastname = req.param('lastname');
-			var lanId = req.param('lanId');
-			var collection = db.get('users');
-			var document = {"_id":emailId, "password" : pass ,"first_name" : firstname ,"last_name" :lastname,"lanId" :lanId,"userActiveFlag" : 'N'};
-			
-			collection.find({"_id" : emailId},function(errData,rec){
-				console.log(rec);
-				if(rec ==null || rec.length == 0){
-					collection.insert(document, {safe: true}, function(err, records){
-					  console.log("Record added as "+records);
-					  
-						var cipher = crypto.createCipher(algorithm, key);  
-						var encrypted = cipher.update(emailId, 'utf8', 'hex') + cipher.final('hex');
-		
-						var smtpTransport = nodemailer.createTransport("SMTP",{
-							service: "Gmail",
-							auth: {
-								user: "mvaid23@gmail.com",
-								pass: "mayurvaid4521"
-							}
-						});
-						smtpTransport.sendMail({
-						   from: "mvaid23@gmail.com", // sender address
-						   to: emailId, // comma separated list of receivers
-						   subject: "Verify Email Address : Everest Premier League", // Subject line
-						   text: verfiyUrl +"?email=" +encrypted // plaintext body
-						}, function(error, response){
-						   if(error){
-							   console.log(error);
-						   }else{
-							   console.log("Message sent: " + response.message);
-						   }
-						});
-					});
-					res.render('signup', { err: 'please verify email address' });
-				}else{
-					res.render('signup', { err: 'Email id already exist' });
-				}
-			});
-			
-		}else{
-			console.log("error ");
-			res.render('signup', { err: 'Email id is not valid' });
-		}
+        var lanId = req.param('name');
+        request.get("http://xsslx0004.target.com:11026/omt/secure/public/checkLanIdExist.do?lanId="+lanId, function (err, res1, body) {
+            if (!err) {
+                var resultsObj = JSON.parse(body);
+                if(resultsObj.responseType.responseCode == 0){
+                    var name = lanId;
+                    var pass = req.param('pass');
+                    var firstName = resultsObj.responseType.firstName;
+                    var lastName = resultsObj.responseType.lastName;
+                    var emailId = resultsObj.responseType.emailId;
+                    
+                    var collection = db.get('users');
+                    var document = {"_id":name, "password" : pass ,"first_name" : firstName ,"last_name" :lastName,"emailId" :emailId,"userActiveFlag" : 'N'};
+                    
+                    collection.find({"_id" : name},function(errData,rec){
+                        console.log(rec);
+                        if(rec ==null || rec.length == 0){
+                            collection.insert(document, {safe: true}, function(err, records){
+                              console.log("Record added as "+records);
+                              
+                                var cipher = crypto.createCipher(algorithm, key);  
+                                var encrypted = cipher.update(name, 'utf8', 'hex') + cipher.final('hex');
+                
+                                var smtpTransport = nodemailer.createTransport("SMTP",{
+                                   service: "localhost"
+                                });
+                                smtpTransport.sendMail({
+                                   from: "ipl2014@target.com", // sender address
+                                   to: records.emailId, // comma separated list of receivers
+                                   subject: "Verify Email Address : Target Premier League", // Subject line
+                                   text: verfiyUrl +"?lanId=" +encrypted // plaintext body
+                                }, function(error, response){
+                                   if(error){
+                                       console.log(error);
+                                   }else{
+                                       console.log("Message sent: " + response.message);
+                                   }
+                                });
+                            });
+                            res.render('signup', { err: 'please verify email address' });
+                        }else{
+                            res.render('signup', { err: 'Lan id already exist' });
+                        }
+                    });
+                    
+                }else{
+                    console.log("error ");
+                    res.render('signup', { err: 'Lan id is not valid' });
+                }
+            }else{
+             console.log("err"+err);
+            res.render('signup', { err: 'Invalid Data' });
+            }
+        });
   };
 };
 
 exports.login = function(db,request) {
     return function(req, res) {
-        var email =req.param("email");
+        var name =req.param("name");
         var pass = req.param("pass");
         var collection = db.get('users');
 
+        console.log("User Id" + name);
+        console.log("User Password" + pass);
         
-        collection.find({"_id" : email,"password" : pass},function(errData,rec){
+        collection.find({"_id" : name,"password" : pass},function(errData,rec){
             if(rec !=null && rec.length > 0){
                 console.log("*** User Found ****");
                 if(rec[0].userActiveFlag == 'N'){
-                    res.render('index', { err: 'Email id is not validated' });
+                    res.render('index', { err: 'Lan id is not validated' });
                 }else{
                     console.log("*** Redirecting to home ****");
                     var cipher = crypto.createCipher(algorithm, key);  
-                    var encrypted = cipher.update(email, 'utf8', 'hex') + cipher.final('hex');
-                     res.cookie('email',encrypted,{httpOnly: true });
+                    var encrypted = cipher.update(name, 'utf8', 'hex') + cipher.final('hex');
+                     res.cookie('lanId',encrypted,{httpOnly: true });
                      res.statusCode = 302;
                      res.setHeader("Location", '/home');
                      res.end();
                    // res.render('home', { record: rec[0] });
                 }
             }else{
-                res.render('index', { err: 'Email id or password is not valid' });
+                res.render('index', { err: 'Lan id or password is not valid' });
             }
         });
     };
@@ -294,13 +277,14 @@ exports.verifyUser = function(db,request) {
     return function(req, res) {
         console.log("sadasdsa");
         var decipher = crypto.createDecipher(algorithm, key);
-        var encyemail = req.param('email');
-        console.log(encyemail);
-        if(encyemail != null){
-            var decrypted = decipher.update(encyemail, 'hex', 'utf8') + decipher.final('utf8');
+        var encyLanId = req.param('lanId');
+        console.log(encyLanId);
+        if(encyLanId != null){
+            var decrypted = decipher.update(encyLanId, 'hex', 'utf8') + decipher.final('utf8');
             console.log(decrypted);
             var collection = db.get('users');
             collection.update({"_id" : decrypted},{$set :{"userActiveFlag": "Y"}}, function(err, records){
+                console.log(records.lanId);
                 if(err){
                     console.log(err);
                      res.statusCode = 302;
@@ -309,7 +293,7 @@ exports.verifyUser = function(db,request) {
                 }
             });
              console.log("*** Redirecting to home ****");
-			 res.cookie('email',encyemail,{httpOnly: true });
+			 res.cookie('lanId',encyLanId,{httpOnly: true });
 			 res.statusCode = 302;
 			 res.setHeader("Location", '/home');
 			 res.end();
@@ -337,10 +321,8 @@ exports.rules = function(db,request) {
 
 exports.signout = function(db,request) {
     return function(req, res) {
-		res.cookie('email','akdhhjhdjh',{maxAge : 0,httpOnly: true });
-        res.statusCode = 302;
-		 res.setHeader("Location", '/');
-		 res.end();
+		res.cookie('lanId','akdhhjhdjh',{maxAge : 0,httpOnly: true });
+        res.render('index');
     };
 };
 
@@ -352,7 +334,7 @@ exports.feedback = function(db,request) {
 
 exports.feedbacksubmit = function(db) {
     return function(req, res) {
-        var userId = req.encyemail;
+        var userId = req.lanId;
         var comments = req.param("comments");
         var collection = db.get('feedback');
 

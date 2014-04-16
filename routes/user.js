@@ -59,3 +59,122 @@ exports.userpoints = function(dbv) {
 	)
   }
 };
+
+
+exports.myDashboardUserData = function(dbv) {
+	var collection = dbv.get('users');
+	
+	/*var matchCall = function callDatabase(ele,callback){
+		 console.log('start of callDatabase ');
+		 var matchCollection = dbv.get('match');
+		 var teamsCollection = dbv.get('teams');
+		 console.log("matchID : "+ele.match_id);
+		     matchCollection.find({"match_id":ele.match_id},{},function(e,matchdoc){
+			 console.log("matchdoc : "+matchdoc);
+			 teamsCollection.find({"_id":matchdoc.team_1_id},{},function(e,team1doc){
+				console.log("teamdoc : "+team1doc);
+			 });
+			 teamsCollection.find({"_id":matchdoc.team_2_id},{},function(e,team2doc){
+				console.log("teamdoc : "+team2doc);
+			 });
+		});
+		 console.log('End of callDatabase ');
+	};*/
+	  return function(req, res) {
+		  var matchCollection = dbv.get('match');
+			var teamsCollection = dbv.get('teams');
+		   collection.find({"_id":req.email},{},function(e,docs){   
+			 var jsonResult = "[";
+	    	  for ( var i = 0; i < docs.length; i++) {
+	    		  var doc=docs[0];
+	    		  var contList = docs[i].contest;
+	    		  async.forEachSeries(contList, processEachTask, afterAllTasks);
+	    		  var count = 1;
+	    		  function processEachTask(task, callback) {
+	    			  var matchCollection = dbv.get('match');
+	    			    var matchId = task.match_id;
+	    			    jsonResult = jsonResult+"{ \n";
+	    			      matchCollection.findOne({"match_id":matchId},{},function(e,matchdoc){
+	    			    	 console.log("matchdoc : "+matchdoc);
+	    			    	 var matchWinner = matchdoc.match_winner;
+	    			    	 var matchMOM = matchdoc.man_of_the_match;
+	    			    	 console.log("Actual winner team : "+matchWinner + " MOM : "+matchMOM);
+	    			    	 teamsCollection.findOne({"_id":matchdoc.team_1_id},{},function(e,team1doc){
+	    							console.log("teamdoc : "+team1doc.team_abbr);
+	    							
+	    							 teamsCollection.findOne({"_id":matchdoc.team_2_id},{},function(e,team2doc){
+	 	    						  jsonResult = jsonResult+" \"match\" : \""+team1doc.team_abbr+" Vs "+team2doc.team_abbr+"\",";
+	 	    						   teamsCollection.findOne({"_id":task.match_winner_entry},{},function(e,teamPredicted){
+	 	    							 jsonResult = jsonResult + "\"predictTeam\" : \""+teamPredicted.team_abbr+"\",";
+	 	    							 
+	 	    							  console.log("mom_entry : "+task.mom_entry);
+	 	    							  teamsCollection.find({"players":{ "$elemMatch" : {"player_id" : task.mom_entry} } },{},function(e,momPlayer){
+	 	    								  var playersList = momPlayer[0].players;
+	 	    								  for ( var k = 0; k < playersList.length; k++) {
+	 	    									// console (k +" :"+playersList[k].player_id)
+	 	    									  if(playersList[k].player_id == task.mom_entry) {
+	 	    										 jsonResult = jsonResult + "\"predictMoM\" : \""+playersList[k].name+"\",";
+	 	    									  }
+	 	    								  }
+	 	    								  
+	 	    								 teamsCollection.findOne({"_id":matchWinner},{},function(e,teamWinner){
+	 		 	    							jsonResult = jsonResult + "\"winnerTeam\" : \""+teamWinner.team_abbr+"\",";
+	 		 	    							  teamsCollection.find({"players":{ "$elemMatch" : {"player_id" : matchMOM} } },{},function(e,momPlayer){
+	 		 	    								  var playersList = momPlayer[0].players;
+	 		 	    								  for ( var k = 0; k < playersList.length; k++) {
+	 		 	    									// console (k +" :"+playersList[k].player_id)
+	 		 	    									  if(playersList[k].player_id == matchMOM) {
+	 		 	    										jsonResult = jsonResult + "\"winnerMoM\" : \""+playersList[k].name+"\"\n ,";
+	 		 	    										
+	 		 	    									  }
+	 		 	    								  }
+	 		 	    								  jsonResult = jsonResult+" \"matchPoints\" : \""+task.match_points+"\" , \n  \"momPoints\" : \""+task.mom_points+"\",\n";
+	 		 	    								jsonResult = jsonResult + "\"bonusPoints\" : \""+task.bonus_points+"\"}";
+	 		 	    								  if(contList.length != count) {
+			 	    											console.log("last element : "+count);
+			 	    											jsonResult = jsonResult+",";
+			 	    									}
+	 		 	    								 count++;
+	 		 	    								 callback();
+	 		 	    							 });
+	 		 	    						   });
+	 	    								  
+	 	    							 });
+	 	    						   });
+	 	    							console.log("teamdoc : "+team2doc.team_abbr);
+	 	    							
+	 	    						 });
+	    						 });
+	    					    
+	    			    	 
+	    			    });
+	    			  // 
+	    			    /*common.findOne('tasks', {'taskId':parseInt(task)}, function(err,res) {
+	    			      tArr.push(res); // NOTE: Assuming order does not matter here
+	    			      console.log(res);
+	    			      callback(err);
+	    			    });*/
+	    		 }
+
+    			  function afterAllTasks(err) {
+    				  if (err) {
+    					  console.log("Error!!");
+    		            } else {
+    		            	jsonResult = jsonResult + "]";
+    		            	console.log(jsonResult);
+    		            	 res.render('dashboard', {
+    		                     "dashboard" : JSON.parse(jsonResult)
+    		                 });
+    		            }
+    			   
+    			  }
+	    	    	
+		      }
+			  
+	    	//  res.json(docs)
+	    	 
+	    	
+	  });
+		  
+	  }
+	};

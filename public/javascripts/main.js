@@ -23,6 +23,10 @@ $(document).ready(function(){
 			Accept : "application/json"
 		},
 		success: function (response) {
+			if(response.match.length > 0){
+				$(".comingsoon").remove();
+				$(".bodyTextBig").remove();
+			}
 			$.each(response.match,function(){
 					$.ajax({
 						url : 'fetchMatchDetails',

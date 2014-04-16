@@ -82,23 +82,42 @@ a{
 
 
 .cartwheellogo {
+    border-radius: 4px;
     height: 43px;
     margin-right: 12px;
 }
 #logo {
-     color: #FF0000;
-    float: left;
+    color: #FF0000;
+    float: right;
     font-family: 'MyWebFont';
     font-size: 29px;
     font-weight: bold;
-    margin-left: 43%;
+    margin-right: 8%;
     margin-top: 2px;
 }
 
+#logo #logoText{
+    border: 1px inset rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5) inset;
+    color: #FFFFFF;
+    float: right;
+    font-style: italic;
+    height: 32px;
+    line-height: 30px;
+    margin-top: 2px;
+    padding: 4px;
+}
 
-#signin_form .err_msg {
+
+#signup a {
+    left: 140px;
+    position: relative;
+    z-index: 107;
+}
+
+#signup .err_msg {
     color: #FF0000;
-    margin-left: 66px;
 }
 .login-form .err_msg {
     color: #FF0000;
@@ -281,16 +300,44 @@ a{
     color: #FFFFFF;
 }
 
-.feedback {
-    border-radius: 4px 4px 4px 4px;
-    padding: 7px 12px 7px 27px;
-    top: 50px;
-    width: 600px;
-    background: none repeat scroll 0 0 #FFFFFF;
-    color: #666666;
-    display: block;
-    margin-left: 20%;
-    opacity: 0.75;
-    margin-top: 8%;
-    float : left;
+#usercounter {
+    left: 60%;
+    position: absolute;
+    top: 50%;
+	color : black;
+}
+
+#usercounter > div {
+    float: left;
+  background: -moz-linear-gradient(black, white); /* FF 3.6+ */  
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #000000), color-stop(100%, #ffffff)); /* Safari 4+, Chrome 2+ */  
+    background: -webkit-linear-gradient(black, white); /* Safari 5.1+, Chrome 10+ */  
+    background: -o-linear-gradient(black, white); /* Opera 11.10 */  
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#ffffff'); /* IE6 & IE7 */  
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#ffffff')"; /* IE8+ */  
+    background: linear-gradient(black, white); /* the standard */  
+    border-radius: 20px;
+    float: left;
+    font-family: 'Bree Serif',serif;
+    font-size: 61px;
+    height: 77px;
+    line-height: 73px;
+    margin-left: 11px;
+    margin-top: 11px;
+    text-align: center;
+    width: 73px;
+}
+
+
+#usercounter > p {
+    background-color: #000000;
+    border-radius: 7px;
+    color: #FFFFFF;
+    font-family: 'Bree Serif',serif;
+    font-size: 28px;
+    font-weight: 300;
+    margin-left: 11px;
+    margin-top: 110px;
+    min-width: 188px;
+    padding: 10px;
 }

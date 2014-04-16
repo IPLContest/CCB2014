@@ -11,6 +11,7 @@ head
     link(href='Page URL - TBD by backend', rel='canonical')
     link(href='/stylesheets/global.css', rel='stylesheet', type='text/css')
     link(href='/stylesheets/main.css', rel='stylesheet', type='text/css')
+    link(href='/stylesheets/style.css', rel='stylesheet', type='text/css')
     link(href='/stylesheets/validationEngine.jquery.css', rel='stylesheet', type='text/css')
     script(type='text/javascript', src='/javascripts/jquery-1.7.2.min.js')
     script(type='text/javascript', src='/javascripts/home.js')
@@ -22,11 +23,8 @@ head
       #header
         .primaryMenu1
         #logo
-          img(src="images/cartwheellogoSmall_white.png" class="cartwheellogo")
-          img(src="images/header2.png")
-        .text
-          label Powered by
-          img(src='images/cartwheel-logo.png', width='175px')
+          img(src="images/EPL_logo.jpg" class="cartwheellogo")
+          #logoText Everest Premeier League
         .primaryMenu
           ul
             li
@@ -35,21 +33,14 @@ head
               a(href='userpoints') Participants Statistics
             li
               a(href='rules') Rules
-      #signIn.signInBox
-        .fadeInBox
-          .signBoxHeadWrapper
-            span
-              a#signUp.ml10.c666.txt-deco-under(href='/') Log In
-            h2#loginHeader Sign Up
-          form#signin_form(method='post', action='register')
-            .inputArea
-              label(for='name') Lan ID
-              input#name.textbox(type='text',data-validation-engine='validate[required]', placeholder='Z000000', name='name')
-            .inputArea
-              label(for='pass') Password
-              input#password.textbox(type='password',data-validation-engine='validate[required]', placeholder='Enter Password', name='pass')
-            div.err_msg
-              p #{err}
-            div
-              button#signin-btn.sign-btn(type='submit') Sign Up
-        .clear
+      form#signup(action='register',method='post')
+       h1 Start doing cool stuff in seconds.
+        a(href='/') Log In
+       input(type='text', placeholder='test@example.com', name='email' ,data-validation-engine='validate[required,custom[email]]')
+       input(type='password', placeholder='Choose your password', name='pass', data-validation-engine='validate[required]')
+       input(type='text', placeholder='First Name', name='firstname' ,data-validation-engine='validate[required]')
+       input(type='text', placeholder='LastName', name='lastname' ,data-validation-engine='validate[required]')
+       input(type='text', placeholder='LanId', name='lanId' ,data-validation-engine='validate[required]')
+       .err_msg
+          p #{err}
+       button(type='submit') Sign up for free!

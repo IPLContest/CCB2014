@@ -19,15 +19,12 @@ head
     script(type='text/javascript', src='/javascripts/jquery.validationEngine-en.js')
     script(type='text/javascript', src='/javascripts/index.js')
   body
-    #content_container_main
+    #content_container_main.indexdiv
       #header
         .primaryMenu1
         #logo
-          img(src="images/cartwheellogoSmall_white.png" class="cartwheellogo")
-          img(src="images/header2.png")
-        .text
-          label Powered by
-          img(src='images/cartwheel-logo.png', width='175px')
+          img(src="images/EPL_logo.jpg" class="cartwheellogo")
+          #logoText Everest Premeier League
         .primaryMenu
           ul
             li
@@ -42,7 +39,7 @@ head
           h1 Login Form
           span Login  Predict  Win !!
         .content
-          input.input.username(name='name',data-validation-engine='validate[required]' ,type='text', placeholder='Lan ID')
+          input.input.email(name='email',data-validation-engine='validate[required,custom[email]]' ,type='text', placeholder='name@example.com')
           .user-icon
           input.input.password(name='pass',data-validation-engine='validate[required]', type='password', placeholder='Password')
           .pass-icon
@@ -51,3 +48,7 @@ head
         .footer
           input.button(type='submit', name='submit', value='Login')
           input.register( type='submit', name='submit', value='Register')
+      #usercounter
+        p#userlabel Users
+        each arr, i in arr1
+         #numdigit #{arr}
