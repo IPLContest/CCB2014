@@ -44,9 +44,9 @@ exports.userpoints = function(dbv) {
 		function (err, items) {
 			if (err) return handleError(err);
 			console.log(req.headers.accept);
-			console.log(items.slice(0,4));
+			console.log(items.slice(0,5));
 			if(req.headers.accept == "application/json"){
-				res.json(items.slice(0,4));
+				res.json(items.slice(0,5));
 			}else{
 			console.log("****** from user.js****");
 				console.log(res.locals.record);

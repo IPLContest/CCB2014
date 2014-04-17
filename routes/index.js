@@ -82,26 +82,23 @@ exports.fetchMatches =function(db,request) {
     return function(req, res) {
 	
 		
-                    var collection = db.get('match');
-                    var teamsdata = db.get('teams');
-                   
-                    require('date-format-lite');
-                    var now = new Date() ;
-                    Date.masks.default = 'MM/DD/YY';
-                    date=now.format();
-                    console.log(date.toString());  
+            var collection = db.get('match');
+            var teamsdata = db.get('teams');
+           
+            require('date-format-lite');
+            var now = calcTime('+5.5'); ;
+            Date.masks.default = 'MM/DD/YY';
+            date=now.format();
+            console.log("***Today's date:"+date);  
 
+            collection.find({"date":date},{},function(e,docs){
 
-                    collection.find({"date":date},{},function(e,docs){
-      
-                    if(docs.length > 0) {
-                    
-                        res.json({
-                            "status" : "success",   
-                            "match" : docs
-                        });
-
-                    
+            if(docs.length > 0) {
+            
+                res.json({
+                    "status" : "success",   
+                    "match" : docs
+                });                    
 				
 
         }else {
@@ -134,6 +131,25 @@ function calcTime(offset) {
 
 }
 
+function calcTimeFromDate(dt, offset) {
+
+    // create Date object for current location
+  // d = new Date();
+    
+    // convert to msec
+    // add local time zone offset 
+    // get UTC time in msec
+    utc = dt.getTime() + (dt.getTimezoneOffset() * 60000);
+    
+    // create new Date object for different city
+    // using supplied offset
+    var nd = new Date(utc + (3600000*offset));
+     console.log("new date:"+nd);
+    return nd;
+
+}
+
+
 
 exports.fetchMatchDetails =function(db,request) {
     return function(req, res) {
@@ -141,24 +157,13 @@ exports.fetchMatchDetails =function(db,request) {
                     var teamsdata = db.get('teams');
                     var match_id=req.param('match_id');
                     var moment = require('moment');
-					 console.log(match_id);   
+					console.log(match_id);   
 
                     require('date-format-lite');
-                    var now = new Date() ;
-                    // console.log(now);
+                   
+                    var currentTime=new Date() ;;
+                    console.log("Current Server Time:" + currentTime);
                     
-                    Date.masks.default = 'YYYY-MM-DD hh:mm:ss';
-                    date=now.format();
-                    //console.log(date.toString());
-
-
-
-                    var dd= calcTime('+9.5');
-                    console.log(dd);
-                    console.log("Calc time ======" + calcTime('+5.5'));
-                    console.log(dd.format());
-
-
                     collection.find({"match_id":match_id},{},function(e,docs){
       
                     if(docs.length > 0) {
@@ -167,20 +172,24 @@ exports.fetchMatchDetails =function(db,request) {
 
                       for (var i=0; i<docs.length; i++) {
                         var doc = docs[i];
-                        doc.teams=[];
-                        var teamInfo =[];
-                    console.log("doc.dateTime");
-                        console.log(doc.dateTime);
-                        console.log(dd);
-                      var startDate = moment(dd, 'YYYY-M-DD HH:mm:ss')
-                      var endDate = moment(doc.dateTime, 'YYYY-M-DD HH:mm:ss')
-                      var secondsDiff = endDate.diff(startDate, 'seconds')
-                      console.log("Seconds Diff");
-                      console.log(secondsDiff);
-                      if(secondsDiff > 0){
+                        doc.teams=[];                      
+                        var matchtime = calcTimeFromDate(new Date(doc.dateTime),'-9.5');                                                  
+                        console.log("Match Time in Server Timezone:" + matchtime);     
+
+                        var current_time_in_ms = currentTime.getTime();
+                        var match_time_in_ms = matchtime.getTime();
+                        var one_hour=1000*60*60;
+
+                        // Calculate the difference in milliseconds
+                        var difference_ms = match_time_in_ms - current_time_in_ms;    
+
+                        console.log("Difference between current time and match time :" + difference_ms);    
+                        console.log("Difference between current time and match time in HOURS:" + (difference_ms/one_hour));                      
+                   
+                        if(difference_ms > 0){
                           doc.disable="N";
                         }else{
-                        doc.disable="Y";
+                          doc.disable="Y";
                         }
 
                         teamsdata.find({"_id":{$in :[doc.team_1_id,doc.team_2_id]}},{},function(e,teamdoc){
@@ -194,9 +203,7 @@ exports.fetchMatchDetails =function(db,request) {
                         });
 
                     });
-				}
-				
-				
+				}				
 
         }else {
              res.render('home', {
@@ -210,15 +217,16 @@ exports.fetchMatchDetails =function(db,request) {
 };
 exports.register = function(db,request) {
     return function(req, res) {
-        var emailId = req.param('email');
+        var emailId = req.param('emailId');
 		if(emailId != null){
+            console.log("Email ID:" + emailId);
 			var pass = req.param('pass');
 			var firstname = req.param('firstname');
 			var lastname = req.param('lastname');
 			var lanId = req.param('lanId');
 			var collection = db.get('users');
-			var document = {"_id":emailId, "password" : pass ,"first_name" : firstname ,"last_name" :lastname,"lanId" :lanId,"userActiveFlag" : 'N'};
-			
+			var document = {"_id" : emailId, "password" : pass ,"first_name" : firstname ,"last_name" :lastname,"lanId" :lanId,"userActiveFlag" : 'N'};
+			console.log("Inserting --" + document);
 			collection.find({"_id" : emailId},function(errData,rec){
 				console.log(rec);
 				if(rec ==null || rec.length == 0){
@@ -231,15 +239,15 @@ exports.register = function(db,request) {
 						var smtpTransport = nodemailer.createTransport("SMTP",{
 							service: "Gmail",
 							auth: {
-								user: "mvaid23@gmail.com",
-								pass: "mayurvaid4521"
+								user: "everestpremierleague@gmail.com",
+								pass: "epl@target"
 							}
 						});
 						smtpTransport.sendMail({
-						   from: "mvaid23@gmail.com", // sender address
+						   from: "everestpremierleague@gmail.com", // sender address
 						   to: emailId, // comma separated list of receivers
-						   subject: "Verify Email Address : Everest Premier League", // Subject line
-						   text: verfiyUrl +"?email=" +encrypted // plaintext body
+						   subject: "Verify Email Address : Everest Premier League 2.0", // Subject line
+						   text: "Kindly verify your email address by clicking " + verfiyUrl +"?email=" +encrypted // plaintext body
 						}, function(error, response){
 						   if(error){
 							   console.log(error);
@@ -352,7 +360,7 @@ exports.feedback = function(db,request) {
 
 exports.feedbacksubmit = function(db) {
     return function(req, res) {
-        var userId = req.encyemail;
+        var userId = req.email;
         var comments = req.param("comments");
         var collection = db.get('feedback');
 
@@ -360,6 +368,27 @@ exports.feedbacksubmit = function(db) {
 
          collection.insert(document, {safe: true}, function(err, records){
                 console.log("Feedback submitte "+records);
+
+
+                var smtpTransport = nodemailer.createTransport("SMTP",{
+                            service: "Gmail",
+                            auth: {
+                                user: "everestpremierleague@gmail.com",
+                                pass: "epl@target"
+                            }
+                        });
+                        smtpTransport.sendMail({
+                           from: req.email, // sender address
+                           to: "everestpremierleague@gmail.com", // comma separated list of receivers
+                           subject: "Issue posted by " + req.email, // Subject line
+                           text:  comments// plaintext body
+                        }, function(error, response){
+                           if(error){
+                               console.log(error);
+                           }else{
+                               console.log("Issue posted and mail has been sent to EPL team: " + response.message);
+                           }
+                        });
 
                 res.render('feedback');
 

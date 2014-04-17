@@ -20,7 +20,7 @@ each matchinfo, i in match
                 label #{matchinfo.teams[1].team_title}
                 .tLogo50x(class="#{matchinfo.teams[1].team_css_name}")
               .matchtime
-                p.matchDate #{matchinfo.match_date_time}
+                p.matchDate #{matchinfo.display_date_time}
           .matchFooter
             .bottom
             .momlabel
@@ -39,8 +39,11 @@ each matchinfo, i in match
             .error_msg
               label#err_msg_label
             if matchinfo.disable == 'N'			  
-            .mombutton
-              button#Predict-btn.Predict-btn(type='submit') Submit Data
+             .mombutton
+               button#Predict-btn.Predict-btn(type='submit') Submit Data
+            else
+             .error_msg
+              label#err_msg_label Submission window is closed for this match!  
           .matchSectionMain
             .teamlogo1
               .tLogo100x(class="#{matchinfo.teams[0].team_css_name}")

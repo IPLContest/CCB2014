@@ -33,6 +33,8 @@ head
               a(href='userpoints') Participants Statistics
             li
               a(href='rules') Rules
+            li
+              a(href='feedback') Feedback 
       #wrapper
        form.login-form(name='login-form', action='login', method='post')
         .header
@@ -48,7 +50,3 @@ head
         .footer
           input.button(type='submit', name='submit', value='Login')
           input.register( type='submit', name='submit', value='Register')
-      #usercounter
-        p#userlabel Users
-        each arr, i in arr1
-         #numdigit #{arr}
