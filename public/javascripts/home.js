@@ -5,6 +5,12 @@ $(document).ready(function () {
 		
 		location.href = "signup";
 	});
+
+	$(".forgotpassword").click(function(e){
+		e.preventDefault();
+		
+		location.href = "forgotpassword";
+	});
 	
 	
 	$("body").delegate(".playerListDropDown a.selection" ,"click",function(){

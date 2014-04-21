@@ -218,20 +218,38 @@ exports.fetchMatchDetails =function(db,request) {
 exports.register = function(db,request) {
     return function(req, res) {
         var emailId = req.param('emailId');
+                 
 		if(emailId != null){
+
+           var S = require('string'); 
+            
+            // Application only accepts target or sapient email address
+           if(S(emailId).endsWith('@target.com') || S(emailId).endsWith('@sapient.com')) {          
+            
             console.log("Email ID:" + emailId);
 			var pass = req.param('pass');
 			var firstname = req.param('firstname');
 			var lastname = req.param('lastname');
 			var lanId = req.param('lanId');
 			var collection = db.get('users');
-			var document = {"_id" : emailId, "password" : pass ,"first_name" : firstname ,"last_name" :lastname,"lanId" :lanId,"userActiveFlag" : 'N'};
+           
+            var cipherpassword = crypto.createCipher(algorithm, key);  
+            var encryptedPassword = cipherpassword.update(pass, 'utf8', 'hex') + cipherpassword.final('hex');
+            console.log("Password AFTER encryption --" + encryptedPassword);
+
+			var document = {"_id" : emailId, "password" : encryptedPassword ,"first_name" : firstname ,"last_name" :lastname,"lanId" :lanId,"userActiveFlag" : 'N'};
 			console.log("Inserting --" + document);
 			collection.find({"_id" : emailId},function(errData,rec){
 				console.log(rec);
 				if(rec ==null || rec.length == 0){
+
+                    collection.find({"lanId" : lanId},function(errData,lanrec){    
+
+                     if(lanrec ==null || lanrec.length == 0){  
+
 					collection.insert(document, {safe: true}, function(err, records){
-					  console.log("Record added as "+records);
+					   
+                        console.log("User successfully added "+records);
 					  
 						var cipher = crypto.createCipher(algorithm, key);  
 						var encrypted = cipher.update(emailId, 'utf8', 'hex') + cipher.final('hex');
@@ -247,25 +265,38 @@ exports.register = function(db,request) {
 						   from: "everestpremierleague@gmail.com", // sender address
 						   to: emailId, // comma separated list of receivers
 						   subject: "Verify Email Address : Everest Premier League 2.0", // Subject line
-						   text: "Kindly verify your email address by clicking " + verfiyUrl +"?email=" +encrypted // plaintext body
+						   text: "Dear "+firstname + " " + lastname +",\n\nWelcome to Everest Premier League 2nd Edition.\n\nKindly verify your email address by clicking " + verfiyUrl +"?email=" +encrypted +"\n\nWarm Regards,\nTeam EPL 2.0"// plaintext body
 						}, function(error, response){
 						   if(error){
 							   console.log(error);
 						   }else{
-							   console.log("Message sent: " + response.message);
+							   console.log("Email has been sent successfully: " + response.message);
 						   }
 						});
 					});
-					res.render('signup', { err: 'please verify email address' });
+					res.render('signup', { err: 'An email has been sent to your registered email adress.Kindly verify your email address!' });
+
+                 } else {
+                    // Lan id has been already used by someone
+                    res.render('signup', { err: 'LAN ID already in use.' });
+                 }   
+
+                });
+
 				}else{
-					res.render('signup', { err: 'Email id already exist' });
+					res.render('signup', { err: 'Email id already exist.' });
 				}
 			});
+
+
+        } else {
+            res.render('signup', { err: 'Kindly use your Sapient or Target email address.' });
+        }
 			
-		}else{
-			console.log("error ");
-			res.render('signup', { err: 'Email id is not valid' });
-		}
+	 }else{
+		console.log("error ");
+		res.render('signup', { err: 'Email id is not valid' });
+	 }
   };
 };
 
@@ -275,8 +306,10 @@ exports.login = function(db,request) {
         var pass = req.param("pass");
         var collection = db.get('users');
 
+       var cipher = crypto.createCipher(algorithm, key);  
+       var encryptedpassword = cipher.update(pass, 'utf8', 'hex') + cipher.final('hex');        
         
-        collection.find({"_id" : email,"password" : pass},function(errData,rec){
+        collection.find({"_id" : email,"password" : encryptedpassword},function(errData,rec){
             if(rec !=null && rec.length > 0){
                 console.log("*** User Found ****");
                 if(rec[0].userActiveFlag == 'N'){
@@ -293,6 +326,56 @@ exports.login = function(db,request) {
                 }
             }else{
                 res.render('index', { err: 'Email id or password is not valid' });
+            }
+        });
+    };
+};
+
+exports.forgotpassword = function(db) {
+    return function(req, res) {
+       res.render('forgotpassword');
+    };
+};
+
+exports.recoverpassword = function(db) {
+    return function(req, res) {
+        var email =req.param("emailId");
+        var lanId = req.param("lanId");
+        var collection = db.get('users');
+
+        
+        collection.find({"_id" : email,"lanId" : lanId},function(errData,rec){
+            if(rec !=null && rec.length > 0){
+                    console.log("*** User Found...Reconvering password****");        
+
+                    var decipher = crypto.createDecipher(algorithm, key);
+                    console.log("Password in DB:" + rec[0].password);
+                    var decrypted = decipher.update(rec[0].password, 'hex', 'utf8') + decipher.final('utf8');         
+
+                    var smtpTransport = nodemailer.createTransport("SMTP",{
+                            service: "Gmail",
+                            auth: {
+                                user: "everestpremierleague@gmail.com",
+                                pass: "epl@target"
+                            }
+                        });
+                        smtpTransport.sendMail({
+                           from: "everestpremierleague@gmail.com", // sender address
+                           to: rec[0]._id, // comma separated list of receivers
+                           subject: "Your Recovered Password: Everest Premier League 2.0", // Subject line
+                           text: "Dear "+rec[0].first_name + " " + rec[0].last_name +",\n\nYour password for Everest Premier League V 2.0 is " + decrypted + "\n\nWarm Regards,\nTeam EPL 2.0"// plaintext body
+                        }, function(error, response){
+                           if(error){
+                               console.log(error);
+                           }else{
+                               console.log("Password has been recovered and email has been sent successfully: " + response.message);
+                           }
+                        });                                  
+                     
+                    res.render('forgotpassword',{ err: 'Your password has been sent to your registered email address!' });
+               
+            }else{
+                res.render('forgotpassword', { err: 'Email id/Lan id combination does not exists!' });
             }
         });
     };

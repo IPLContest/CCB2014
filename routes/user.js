@@ -60,6 +60,47 @@ exports.userpoints = function(dbv) {
   }
 };
 
+exports.mypoints = function(dbv) {
+  return function(req, res) {
+   dbv.collection('users').aggregate(
+   		{"$match": {"_id":req.email} } ,
+		{"$unwind": "$contest" } ,
+		{ $group:
+			{
+			"_id": '$_id',
+			"f_name" : {$first : '$first_name'},
+			"l_name" : {$first : '$last_name'},
+			"t_mom_points": { $sum: '$contest.mom_points' },
+			"t_bonus_points": { $sum: '$contest.bonus_points' },
+			"t_match_points": { $sum: '$contest.match_points' }
+			}
+		},
+		{
+		$project :
+			{
+			'first_name':'$f_name',
+			'last_name':'$l_name',
+			'totalPoints' : { $add : [ '$t_mom_points', '$t_bonus_points', '$t_match_points' ] },
+			}
+		},
+		{
+		$sort :
+			{
+			totalPoints : -1
+			}
+		},
+		function (err, items) {
+			if (err) return handleError(err);
+			console.log(req.headers.accept);
+			console.log(items.slice(0,5));			
+			res.json(items.slice(0,5));
+			
+		}	
+	)
+  }
+}
+
+
 
 exports.myDashboardUserData = function(dbv) {
 	var collection = dbv.get('users');
@@ -88,6 +129,8 @@ exports.myDashboardUserData = function(dbv) {
 	    	  for ( var i = 0; i < docs.length; i++) {
 	    		  var doc=docs[0];
 	    		  var contList = docs[i].contest;
+	    		  console.log("Contest List:" + contList);
+	    		  if(contList != undefined && contList.length > 0) {
 	    		  async.forEachSeries(contList, processEachTask, afterAllTasks);
 	    		  var count = 1;
 	    		  function processEachTask(task, callback) {
@@ -117,7 +160,11 @@ exports.myDashboardUserData = function(dbv) {
 	 	    									  }
 	 	    								  }
 	 	    								  
+	 	    								
+	 	    								if(matchWinner != null || matchWinner != "")  {
 	 	    								 teamsCollection.findOne({"_id":matchWinner},{},function(e,teamWinner){
+	 	    								 	console.log("Winner Team: "+ teamWinner);
+	 	    								 	if(teamWinner != null) {
 	 		 	    							jsonResult = jsonResult + "\"winnerTeam\" : \""+teamWinner.team_abbr+"\",";
 	 		 	    							  teamsCollection.find({"players":{ "$elemMatch" : {"player_id" : matchMOM} } },{},function(e,momPlayer){
 	 		 	    								  var playersList = momPlayer[0].players;
@@ -128,7 +175,7 @@ exports.myDashboardUserData = function(dbv) {
 	 		 	    										
 	 		 	    									  }
 	 		 	    								  }
-	 		 	    								  jsonResult = jsonResult+" \"matchPoints\" : \""+task.match_points+"\" , \n  \"momPoints\" : \""+task.mom_points+"\",\n";
+	 		 	    								 jsonResult = jsonResult+" \"matchPoints\" : \""+task.match_points+"\" , \n  \"momPoints\" : \""+task.mom_points+"\",\n";
 	 		 	    								jsonResult = jsonResult + "\"bonusPoints\" : \""+task.bonus_points+"\"}";
 	 		 	    								  if(contList.length != count) {
 			 	    											console.log("last element : "+count);
@@ -137,7 +184,22 @@ exports.myDashboardUserData = function(dbv) {
 	 		 	    								 count++;
 	 		 	    								 callback();
 	 		 	    							 });
+
+	 		 	    							} else {
+
+	 		 	    								jsonResult = jsonResult + "\"winnerTeam\" : \""+"Not Available"+"\",";
+	 		 	    								jsonResult = jsonResult + "\"winnerMoM\" : \""+"Not Available"+"\"\n, ";
+	 		 	    								jsonResult = jsonResult+" \"matchPoints\" : \""+"0"+"\" , \n  \"momPoints\" : \""+"0"+"\",\n";
+	 		 	    								jsonResult = jsonResult + "\"bonusPoints\" : \""+"0"+"\"}";
+	 		 	    								 if(contList.length != count) {
+			 	    											console.log("last element : "+count);
+			 	    											jsonResult = jsonResult+",";
+			 	    									}
+	 		 	    								 count++;
+	 		 	    								 callback();
+	 		 	    							}
 	 		 	    						   });
+											}
 	 	    								  
 	 	    							 });
 	 	    						   });
@@ -155,6 +217,16 @@ exports.myDashboardUserData = function(dbv) {
 	    			      callback(err);
 	    			    });*/
 	    		 }
+
+	    		} else {
+
+	    			jsonResult = "[]";
+
+	    			 res.render('dashboard', {
+    		                     "dashboard" : JSON.parse(jsonResult)
+    		                 });
+
+	    		}
 
     			  function afterAllTasks(err) {
     				  if (err) {

@@ -2,7 +2,7 @@ doctype html(xmlns='http://www.w3.org/1999/xhtml')
 head
     meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    title IPL Contest
+    title Everest Premier League - Feedback
     meta(content='no-cache', http-equiv='cache-control')
     meta(content='IPL Contest, IPL, Cricket, match', name='keywords')
     meta(content='IPL Contest, IPL, Cricket, match', name='description')
@@ -17,7 +17,7 @@ head
         .primaryMenu1
         #logo
           img(src="images/EPL_logo.jpg" class="cartwheellogo")
-          #logoText Everest Premeier League
+          #logoText Everest Premier League
         .primaryMenu
           ul
             li
@@ -26,8 +26,11 @@ head
               a(href='userpoints') Participants Statistics
             li
               a(href='rules') Rules
-            li
-              a(href='feedback') Feedback 
+            if loggedin == "true"
+             li
+              a(href='myDashboard') My Dashboard
+             li
+              a(href='feedback') Feedback  
           .userInfo
             if record != null
               label #{record.first_name} &nbsp;

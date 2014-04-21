@@ -39,6 +39,22 @@ $(document).ready(function(){
 			});
 		}
 	});
+
+	$.ajax({
+		url : 'mypoints',
+		dataType: 'json',
+		headers: { 
+			Accept : "application/json"
+		},
+		success: function (response) {
+			var html = "";
+			$.each(response,function(){				
+			
+				$("#username").append(" | My Points: " + $(this)[0].totalPoints+" ");
+			
+			});
+		}
+	});
 	
 	
 	$("body").delegate("#Predict-btn","click",function(e){

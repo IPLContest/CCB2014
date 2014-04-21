@@ -30,9 +30,9 @@ console.log("Mongo DB PORT:"+process.env.OPENSHIFT_MONGODB_DB_PORT);
 
 
 //Following line is used for cloud. Comment it when running on local
-var connectionstrmonk = "admin:hRhTuGzZr_71@"+process.env.OPENSHIFT_MONGODB_DB_HOST+":"+process.env.OPENSHIFT_MONGODB_DB_PORT+"/iplcontest2014";
+//var connectionstrmonk = "admin:hRhTuGzZr_71@"+process.env.OPENSHIFT_MONGODB_DB_HOST+":"+process.env.OPENSHIFT_MONGODB_DB_PORT+"/iplcontest2014";
 //Uncomment the following line when you are running locally
-//var connectionstrmonk = "localhost:27017/cpl2014";
+var connectionstrmonk = "localhost:27017/cpl2014";
 var db = monk(connectionstrmonk);
 
 
@@ -40,9 +40,9 @@ var db = monk(connectionstrmonk);
 
 var mongoo = require('mongoskin');
 //Following line is used for cloud. Comment it when running on local
-var connectionstr = "mongodb://admin:hRhTuGzZr_71@"+process.env.OPENSHIFT_MONGODB_DB_HOST+":"+process.env.OPENSHIFT_MONGODB_DB_PORT+"/iplcontest2014";
+//var connectionstr = "mongodb://admin:hRhTuGzZr_71@"+process.env.OPENSHIFT_MONGODB_DB_HOST+":"+process.env.OPENSHIFT_MONGODB_DB_PORT+"/iplcontest2014";
 //Uncomment the following line when you are running locally
-//var connectionstr = "mongodb://localhost:27017/cpl2014";
+var connectionstr = "mongodb://localhost:27017/cpl2014";
 
 var dbv = mongoo.db(connectionstr, {native_parser:true});
 
@@ -81,14 +81,23 @@ if(cookies['email'] != null){
   req.email = decrypted;
   console.log("User Id: "+decrypted);
   
-   var collection = db.get('users');          
+   var collection = db.get('users');     
+   var settingscollection = db.get("settings");     
    collection.find({"_id" : req.email},function(errData,rec){
     if(!errData){
       res.locals.record = rec[0];
+      res.locals.loggedin="true";
+
+       settingscollection.find({},function(errData,settings){
+        res.locals.settings = settings;
+
+        console.log("#### Enable Analytics:" + settings[0].enable_analytics);
+      
        if(!(rec !=null && rec.length > 0)){
          res.render('index', { title: 'Hello, World!' });
        }
        next(); 
+     });
     }else{
        res.render('500', {title:'500: Internal Server Error', error: errData});
     }
@@ -117,6 +126,8 @@ app.get('/verifyUser', routes.verifyUser(db,request));
 app.get('/matchstats', routes.matchstats(db));
 app.get('/userstats', routes.userstats(db));
 app.get('/rules', routes.rules());
+app.get('/forgotpassword', routes.forgotpassword(db));
+app.post('/recoverpassword', routes.recoverpassword(db));
 
 app.get('/userlist', user.userlist(dbv));
 app.get('/userpoints', user.userpoints(dbv));
@@ -138,6 +149,7 @@ app.get('/fetchMatchDetails', routes.fetchMatchDetails(db,request));
 app.get('/feedback', routes.feedback(db,request));
 app.post('/feedbacksubmit', routes.feedbacksubmit(db));
 app.get('/myDashboard', user.myDashboardUserData(db));
+app.get('/mypoints', user.mypoints(dbv));
 
 app.get('*', function(req, res){
   res.render('404', 404);
@@ -145,13 +157,13 @@ app.get('*', function(req, res){
 
 
 // Uncomment the below given block when pushing code to cloud
-http.createServer(app).listen(app.get('port'), server_ip_address,function(){
+/*http.createServer(app).listen(app.get('port'), server_ip_address,function(){
   console.log('Express server listening on port ' + app.get('port'));
-});
+});*/
 
 
 //Uncomment when used locally
-/*http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-*/
+
