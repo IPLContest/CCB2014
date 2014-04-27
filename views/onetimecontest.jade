@@ -9,10 +9,18 @@ html
       tbody
       each question, i in questions
         tr
-          td #{question.question}
-          td
-            select
-              option Select a player
-              each player, i in players              
-                option(value="#{player.player_id}") #{player.name}            
+          if question._id < 4
+            td #{question.question}
+            td
+              select
+                option Select a player
+                each player, i in players              
+                  option(value="#{player.player_id}") #{player.name} 
+          else
+            td #{question.question}
+            td
+              select
+                option Select a team
+                each team, i in teams              
+                  option(value="#{team._id}") #{team.team_title}		  
               

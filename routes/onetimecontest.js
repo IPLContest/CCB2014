@@ -15,21 +15,21 @@ exports.onetimecontest = function(dbv) {
 				eligibleQuestions.push(items[i]);
 			}	
 		}	  
-		dbv.collection('teams').find().toArray(function (err, teamdocs) {
+		dbv.collection('teams').find().toArray(function (err, teamdocs) {			
 			var allplayers=[];	  
 			for(var i=0; i<teamdocs.length; i++){			
 				for(var j=0; j<teamdocs[i].players.length; j++){
 					allplayers.push(teamdocs[i].players[j]);
 				}		
-			}		
-		
-		responseJSON.push("questions",eligibleQuestions);
-		responseJSON.push("allplayers",allplayers);		
-		res.render('onetimecontest', {
+			}	
+			responseJSON.push("questions",eligibleQuestions);
+			responseJSON.push("allplayers",allplayers);		
+			res.render('onetimecontest', {
                 "status" : "success",   
             	"questions" : eligibleQuestions,
-				"players":allplayers
-				});
+				"players":allplayers,
+				"teams":teamdocs
+			});
 	  })	  
     })
   }
