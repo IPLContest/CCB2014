@@ -15,6 +15,7 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var match = require('./routes/match');
 var admin = require('./routes/admin.js')
+var onetimecontest = require('./routes/onetimecontest');
 var http = require('http');
 var path = require('path');
 var request = require("request");
@@ -150,6 +151,7 @@ app.get('/feedback', routes.feedback(db,request));
 app.post('/feedbacksubmit', routes.feedbacksubmit(db));
 app.get('/myDashboard', user.myDashboardUserData(db));
 app.get('/mypoints', user.mypoints(dbv));
+app.get('/onetimecontest', onetimecontest.onetimecontest(db));
 
 app.get('*', function(req, res){
   res.render('404', 404);
