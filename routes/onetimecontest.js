@@ -5,39 +5,33 @@
 exports.onetimecontest = function(db) {
     return function(req, res) {
         var contestCollection = db.get('onetimecontest');
-		var teams = db.get('teams');
-		console.log("got the collection : "+contestCollection);
-		require('date-format-lite');
+		var teamCollection = db.get('teams');
 		var now = new Date() ;
-		teams.find({},{},function(e,teamDocs){
-			for (var i=0; i<teamDocs.length; i++) {
-				var teamDoc = teamDocs[i];
-				teamDoc.players=[];
-				teamDoc.questions=[];
-				console.log("teamDoc.players : "+teamDoc.players);
-				teamDoc.players.push(teamDoc.players);
-				contestCollection.find({},{},function(e,contestDocs){
-					console.log("contestDocs : "+contestDocs);
-					for (var i=0; i<contestDocs.length; i++) {
-						var question = contestDocs[i];
-						var start = new Date(question.startDate);
-						var end = new Date(question.endDate);
-						console.log("now.getTime() : "+now);
-						console.log("start.getTime() : "+start);
-						console.log("end.getTime() : "+end);
-						
-						if(now > start && now < end) {
-							console.log("inside if");
-							teamDoc.questions.push(question);
+		var teamInfo = [];
+		var playerInfo = [];
+		var contestQuestions = [];
+		teamCollection.find({},{},function(e,docs){
+			for (var i=0; i<docs.length; i++) {
+				var team = docs[i];
+				teamInfo.push(team);
+				console.log("team : "+team);
+				for (var j in team.players) {
+					var player = team.players[j];
+					playerInfo.push(player);
+					contestCollection.find({},{},function(e,contestDocs){
+						for (var k=0; k<contestDocs.length; k++) {
+							var question = contestDocs[k];
+							contestQuestions.push(question);
 							res.render('onetimecontest', {
-							"onetimecontest" : teamDocs
+								players : JSON.stringify(playerInfo),
+								questions : JSON.stringify(contestQuestions),
+								teams : JSON.stringify(teamInfo)
 							});
 						}
-					}
-				});
-					
+						
+					});
+				}
 			}
-		})
-		
-    };
+		});
+	};
 };

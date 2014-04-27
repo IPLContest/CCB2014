@@ -4,5 +4,9 @@ block content
 	h1.
 		One Time Contest1
 	ul
-		each question, i in onetimecontest
-			question.question : #{question.question}
+		script(type='text/javascript')
+		var iQuestions = JSON.parse('!{questions}');
+		var iPlayer = JSON.parse('!{players}');
+		var iTeams = JSON.parse('!{teams}');
+				
+					
