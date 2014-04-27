@@ -151,7 +151,7 @@ app.get('/feedback', routes.feedback(db,request));
 app.post('/feedbacksubmit', routes.feedbacksubmit(db));
 app.get('/myDashboard', user.myDashboardUserData(db));
 app.get('/mypoints', user.mypoints(dbv));
-app.get('/onetimecontest', onetimecontest.onetimecontest(db));
+app.get('/onetimecontest', onetimecontest.onetimecontest(dbv));
 
 app.get('*', function(req, res){
   res.render('404', 404);
