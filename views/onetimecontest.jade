@@ -1,12 +1,27 @@
-extends layout
+html
+  head    
+  body
+    table(style='width: 900px;')
+      thead
+        tr
+          th Question
+          th Players
+      tbody
+      each question, i in questions
+        tr
+          if question._id < 4
+            td #{question.question}
+            td
+              select
+                option Select a player
+                each player, i in players              
+                  option(value="#{player.player_id}") #{player.name} 
+          else
+            td #{question.question}
+            td
+              select
+                option Select a team
+                each team, i in teams              
+                  option(value="#{team._id}") #{team.team_title}		  
+              
 
-block content
-	h1.
-		One Time Contest1
-	ul
-		script(type='text/javascript')
-		var iQuestions = JSON.parse('!{questions}');
-		var iPlayer = JSON.parse('!{players}');
-		var iTeams = JSON.parse('!{teams}');
-				
-					

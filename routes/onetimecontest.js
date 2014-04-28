@@ -1,37 +1,35 @@
 /*
  * GET One Time Contest page.
  */
-
-exports.onetimecontest = function(db) {
-    return function(req, res) {
-        var contestCollection = db.get('onetimecontest');
-		var teamCollection = db.get('teams');
-		var now = new Date() ;
-		var teamInfo = [];
-		var playerInfo = [];
-		var contestQuestions = [];
-		teamCollection.find({},{},function(e,docs){
-			for (var i=0; i<docs.length; i++) {
-				var team = docs[i];
-				teamInfo.push(team);
-				console.log("team : "+team);
-				for (var j in team.players) {
-					var player = team.players[j];
-					playerInfo.push(player);
-					contestCollection.find({},{},function(e,contestDocs){
-						for (var k=0; k<contestDocs.length; k++) {
-							var question = contestDocs[k];
-							contestQuestions.push(question);
-							res.render('onetimecontest', {
-								players : JSON.stringify(playerInfo),
-								questions : JSON.stringify(contestQuestions),
-								teams : JSON.stringify(teamInfo)
-							});
-						}
-						
-					});
-				}
-			}
-		});
-	};
+exports.onetimecontest = function(dbv) {
+  var presentDate = new Date();
+  return function(req, res) {
+	var responseJSON = [];
+    dbv.collection('onetimecontest').find().toArray(function (err, items) {	  
+		var eligibleQuestions = [];	  
+		for(var i=0; i<items.length; i++){
+			var startDate = new Date(items[i].q_start_date);
+			var endDate = new Date(items[i].q_end_date);
+			if((presentDate > startDate) && (presentDate < endDate)){			
+				eligibleQuestions.push(items[i]);
+			}	
+		}	  
+		dbv.collection('teams').find().toArray(function (err, teamdocs) {			
+			var allplayers=[];	  
+			for(var i=0; i<teamdocs.length; i++){			
+				for(var j=0; j<teamdocs[i].players.length; j++){
+					allplayers.push(teamdocs[i].players[j]);
+				}		
+			}	
+			responseJSON.push("questions",eligibleQuestions);
+			responseJSON.push("allplayers",allplayers);		
+			res.render('onetimecontest', {
+                "status" : "success",   
+            	"questions" : eligibleQuestions,
+				"players":allplayers,
+				"teams":teamdocs
+			});
+	  })	  
+    })
+  }
 };
