@@ -1,26 +1,67 @@
-html
-  head    
+doctype html(xmlns='http://www.w3.org/1999/xhtml')
+head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    title Everest Premier League - Contest
+    meta(content='no-cache', http-equiv='cache-control')
+    meta(content='IPL Contest, IPL, Cricket, match', name='keywords')
+    meta(content='IPL Contest, IPL, Cricket, match', name='description')
+    meta(name='msvalidate.01', content='to be filled in')
+    meta(name='verify-v1', content='to be filled in')
+    link(href='Page URL - TBD by backend', rel='canonical')
+    link(href='/stylesheets/global.css', rel='stylesheet', type='text/css')
+    link(href='/stylesheets/main.css', rel='stylesheet', type='text/css')
   body
-    table(style='width: 900px;')
-      thead
-        tr
-          th Question
-          th Players
-      tbody
-      each question, i in questions
-        tr
-          if question._id < 4
-            td #{question.question}
-            td
-              select
-                option Select a player
-                each player, i in players              
-                  option(value="#{player.player_id}") #{player.name} 
-          else
-            td #{question.question}
-            td
-              select
-                option Select a team
-                each team, i in teams              
-                  option(value="#{team._id}") #{team.team_title}		  
+    #content_container_main
+      #header
+        .primaryMenu1
+        #logo
+          img(src="images/EPL_logo.jpg" class="cartwheellogo")
+          #logoText Everest Premier League
+        .primaryMenu
+          ul
+            li
+              a(href='home') Home
+            li
+              a(href='userpoints') Participants Statistics
+            li
+              a(href='rules') Rules
+            if loggedin == "true"
+             li
+              a(href='myDashboard') My Dashboard
+             li
+              a(href='feedback') Feedback  
+          .userInfo
+            if record != null
+              label #{record.first_name} &nbsp;
+              | |
+              a.signout(href='signout') &nbsp;Sign Out
               
+      table(style='width: 900px;')
+        thead
+          tr
+            th Question
+            th Players
+        tbody
+          form(name="input", action="contestSubmit", method="post")
+            each question, i in questions
+              tr
+                if question._id < 4
+                  td #{question.question} 
+                    input(type='hidden', value='#{question._id}', name='questionId')
+                    input(type='hidden', value='#{question.points}', name='questionPoints')
+                  td
+                    select
+                      option Select a player
+                        each player, i in players              
+                          option(value="#{player.player_id}") #{player.name} 
+                else if question._id > 3
+                  td #{question.question}
+                  td
+                    select
+                      option Select a team
+                        each team, i in teams              
+                          option(value="#{team._id}") #{team.team_title}
+                br
+              tr
+            input(type="submit", class="feedbacksubmit",value="Submit")

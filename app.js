@@ -152,6 +152,7 @@ app.post('/feedbacksubmit', routes.feedbacksubmit(db));
 app.get('/myDashboard', user.myDashboardUserData(db));
 app.get('/mypoints', user.mypoints(dbv));
 app.get('/onetimecontest', onetimecontest.onetimecontest(dbv));
+app.post('/contestSubmit', onetimecontest.contestSubmit(dbv));
 
 app.get('*', function(req, res){
   res.render('404', 404);
