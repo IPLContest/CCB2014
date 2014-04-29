@@ -47,23 +47,19 @@ head
             each question, i in questions
               tr
                 if question._id < 4
-                  td #{question.question} 
-                    input(type='hidden', value='#{question._id}', name='question_id}')
-                    input(type='hidden', value='#{question.points}', name='question_points')
+                  td #{question.question}                   
                   td
-                    select
+                    select(name="contestselect")
                       option Select a player
                         each player, i in players              
-                          option(value="#{player.player_id}") #{player.name} 
+                          option(value="#{player.player_id}|q#{question._id}") #{player.name} 
                 else if question._id > 3
                   td #{question.question}
-                    input(type='hidden', value='#{question._id}', name='question_id')
-                    input(type='hidden', value='#{question.points}', name='question_points')
                   td
-                    select(name="teamselect")
+                    select(name="contestselect")
                       option Select a team
                         each team, i in teams              
-                          option(value="#{team._id}") #{team.team_title}
+                          option(value="#{team._id}|q#{question._id}") #{team.team_title}
                 br
               tr
             input(type="submit", class="feedbacksubmit",value="Submit")

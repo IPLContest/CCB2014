@@ -18,10 +18,9 @@ exports.onetimecontest = function(dbv) {
 			var allplayers=[];	  
 			console.log("teamdocs.length : "+teamdocs.length);
 			for(var i=0; i<teamdocs.length; i++){	
-				/*console.log("teamdocs[i].players.length : "+teamdocs[i].players);
 				for(var j=0; j<teamdocs[i].players.length; j++){
 					allplayers.push(teamdocs[i].players[j]);
-				}*/		
+				}	
 			}
 			responseJSON.push("questions",eligibleQuestions);
 			responseJSON.push("allplayers",allplayers);		
@@ -39,64 +38,83 @@ exports.onetimecontest = function(dbv) {
 
 
 exports.contestSubmit = function(dbv) {
-	return function(req, res) {
-		var allQuestionsId=req.param('question_id');
-		var allQuestionPoints=req.param('question_points');
-		var allPlayersId=req.param('player_id');
-		var allTeamsId=req.param('teamselect');
-		console.log("allQuestionsId : "+allQuestionsId);
-		console.log("allQuestionPoints : "+allQuestionPoints);
-		console.log("allPlayersId : "+allPlayersId);
-		console.log("allTeamsId "+ allTeamsId);
+	return function(req, res) {		
+		var formdata=req.param('contestselect');	
 		
-		var questionArray = allQuestionsId.toString().split(",");
-		var question1 = questionArray[0];
-		var question2 = questionArray[1];
-		var question3 = questionArray[2];
-		var question4 = questionArray[3];
-		var question5 = questionArray[4];
-				
-		var questionPointsArray = allQuestionPoints.toString().split(",");
-		var questionPoints1 = questionPointsArray[0];
-		var questionPoints2 = questionPointsArray[1];
-		var questionPoints3 = questionPointsArray[2];
-		var questionPoints4 = questionPointsArray[3];
-		var questionPoints5 = questionPointsArray[4];
-		
-		/*var playersIdArray = allPlayersId.toString().split(",");
-		var player1 = playersIdArray[0];
-		var player2 = playersIdArray[1];
-		var player3 = playersIdArray[2];*/
-		
-		var teamIdArray = allTeamsId.toString().split(",");
-		var teamId1 = teamIdArray[0];
-		var teamId2 = teamIdArray[1];
-		
-		console.log("teamId1 : "+teamId1);
-		console.log("teamId2 : "+teamId2);
-		dbv.collection('users').find({"_id":"sushant.kumar3@target.com"}).toArray(function (err, docs) {
+		var questionMap = {
+			'q1': 'orange_cap',
+			'q2': 'purple_cap',
+			'q3': 'max_sixes',
+			'q4': 'ipl_winner',
+			'q2': 'runner_up'			
+		};		
+		var userpredictions = formdata.toString().split(",");
+		var predictedArray = [];
+		for(i=0; i<userpredictions.length; i++){
+			if(userpredictions[i].indexOf("|") > -1){
+				predictedArray.push(userpredictions[i]);
+			}
+		}
+		dbv.collection('users').find({"_id":"pkulkarni2@sapient.com"}).toArray(function (err, docs) {
 			var doclength=docs.length;
-			console.log("doclength : "+doclength);
-			if(doclength < 1){
-				console.log("Only one user entry found");
-         		dbv.collection('users').update({ _id: "sushant.kumar3@target.com"},{$push :{onetime_contest:{"orange_cap":"player1","purple_cap":"player2","max_sixes":"player3","ipl_winner":teamId1,"runner_up":teamId2,"orange_cap_points":questionPoints1,"purple_cap_points" :questionPoints2, "max_sixes_points" : questionPoints3,"ipl_winner_points" : questionPoints4,"runner_up_points" : questionPoints5,"bonus_points" : 0}}}, function(err, records){
-					res.json( {
-							"status" : "submitted",                            
-							"statusmessage" : "Your entry has been submitted successfully."
-					});
+			console.log("doclength : "+doclength);						
+			if(doclength > 0){
+				if (docs[0].onetime_contest === undefined){					
+					var jsonString = '';
+					var obj = {};
+					var contest = {};
+					for(i=0; i<predictedArray.length; i++){
+						var dimArray = predictedArray[i].split("|")
+						var q = questionMap[dimArray[1]];
+						var v = dimArray[0];						
+						obj[q] = v;						
+						contest['onetime_contest'] = obj;						
+					}
+					dbv.collection('users').update({ _id: "pkulkarni2@sapient.com"},{$push :contest}, function(err, records){
+						console.log("No of records pushed :"+records);
+						res.json( {
+								"status" : "submitted",                            
+								"statusmessage" : "Your entry has been submitted successfully."
+						});
 
-				});
-
-			}else{
-				console.log("More than one user entry found");
-				dbv.collection('users').update({ _id: "sushant.kumar3@target.com"},{$set :{onetime_contest:{"orange_cap":"player1","purple_cap":"player2","max_sixes":"player3","ipl_winner":teamId1,"runner_up":teamId2,"orange_cap_points":questionPoints1,"purple_cap_points" :questionPoints2, "max_sixes_points" : questionPoints3,"ipl_winner_points" : questionPoints4,"runner_up_points" : questionPoints5,"bonus_points" : 0}}}, function(err, records){
-					res.json( {
-						"status" : "submitted",                            
-						"statusmessage" : "Your previous entry has been updated successfully."
-					});
-
-				});
-
+					});					
+								
+				} else {	
+					for(i=0; i<predictedArray.length; i++){
+						var dimArray = predictedArray[i].split("|")
+						var q = dimArray[1];
+						var v = dimArray[0];						
+						if(q === 'q1'){
+							dbv.collection('users').update({'_id': "pkulkarni2@sapient.com"},{$set :{ "onetime_contest.0.orange_cap": v}}, function(err, records){
+								console.log("No of records set :"+records);
+								console.log("No of records set :"+err);						
+							});
+						} else if(q === 'q2'){
+							dbv.collection('users').update({'_id': "pkulkarni2@sapient.com"},{$set :{ "onetime_contest.0.purple_cap": v}}, function(err, records){
+								console.log("No of records set :"+records);
+								console.log("No of records set :"+err);						
+							});
+						}else if(q === 'q3'){
+							dbv.collection('users').update({'_id': "pkulkarni2@sapient.com"},{$set :{ "onetime_contest.0.max_sixes": v}}, function(err, records){
+								console.log("No of records set :"+records);
+								console.log("No of records set :"+err);						
+							});
+						}else if(q === 'q4'){
+							dbv.collection('users').update({'_id': "pkulkarni2@sapient.com"},{$set :{ "onetime_contest.0.ipl_winner": v}}, function(err, records){
+								console.log("No of records set :"+records);
+								console.log("No of records set :"+err);						
+							});
+						}else if(q === 'q5'){
+							dbv.collection('users').update({'_id': "pkulkarni2@sapient.com"},{$set :{ "onetime_contest.0.runner_up": v}}, function(err, records){
+								console.log("Inside Q5 :"+q);
+								console.log("No of records set :"+records);
+								console.log("No of records set :"+err);						
+							});
+						}
+						
+					}
+													
+				}
 			}
 		});
     };
