@@ -46,7 +46,7 @@ exports.contestSubmit = function(dbv) {
 			'q2': 'purple_cap',
 			'q3': 'max_sixes',
 			'q4': 'ipl_winner',
-			'q2': 'runner_up'			
+			'q5': 'runner_up'			
 		};		
 		var userpredictions = formdata.toString().split(",");
 		var predictedArray = [];
